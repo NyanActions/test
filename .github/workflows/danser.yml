@@ -49,7 +49,7 @@ jobs:
           const replay = await parser.readSync("./replay.osr")
           const json = await fetch(`https://osu.ppy.sh/api/get_beatmaps?k=${process.env.API_KEY}&h=${replay.beatmapMD5}`).then(res => res.json())
           const download = wget.download(`https://catboy.best/d/${json.beatmapset_id}`, `${process.cwd()}/Songs/beatmaps.osz`)
-          download.on("start", () => console.log("beatmap downloading..")
+          download.on("start", () => console.log("beatmap downloading.."))
           download.on("end", async () => {
             console.log("beatmap download complete!")
             return replay.beatmapMD5
