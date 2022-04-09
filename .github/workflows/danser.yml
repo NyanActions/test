@@ -29,14 +29,11 @@ jobs:
     - name: download replay and skin
       run: |
         wget -O replay.osr ${{ github.event.inputs.replayurl }}
-        curl ${{ github.event.inputs.replayurl }} --create-dirs -o Skins/ryanstolefromkevin/ryanstolefromkevin.7z
-        # 7z x Skins/ryanstolefromkevin.zip
-        # cd Skins && zip -FF repair.zip --out ryanstolefromkevin.zip | unzip
-        # jar xvf Skins/ryanstolefromkevin/ryanstolefromkevin.zip
- 
+        mkdir -p Skins/ryanstolefromkevin && wget -O Skins/ryanstolefromkevin/ryanstolefromkevin.7z ${{ github.event.inputs.replayurl }}
+
     - uses: edgarrc/action-7z@v1
       with:
-        args: "7z x Skins/ryanstolefromkevin/ryanstolefromkevin.7z"
+        args: "cd Skins/ryanstolefromkevin/ryanstolefromkevin.7z && 7z x ryanstolefromkevin.7z"
 
     - name: install dependencies
       run: npm install node-osr node-fetch@v2 wget-improved --save
