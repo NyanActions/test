@@ -8,12 +8,11 @@
     "UseBeatmapColors": true,
     "UseColorsFromSkin": true,
     "FallbackSkin": "default_fallback"
-  }
+  },
   "Recording": {
     "FrameWidth": 1920,
     "FrameHeight": 1080,
     "FPS": 60,
     "AudioCodec": "aac"
   }
-  
 }
