@@ -31,7 +31,7 @@ jobs:
         wget -O replay.osr ${{ github.event.inputs.replayurl }}
         mkdir -p Skins/ryanstolefromkevin && wget -O Skins/ryanstolefromkevin/ryanstolefromkevin.7z ${{ github.event.inputs.replayurl }}
 
-    - uses: extract-7z-action@v1.0
+    - uses: DuckSoft/extract-7z-action@v1.0
       with:
         pathSource: "Skins/ryanstolefromkevin/ryanstolefromkevin.7z"
         pathTarget: "Skins/ryanstolefromkevin/"
