@@ -1,7 +1,7 @@
 {
   "General": {
-    "OsuSongsDir": "./Songs",
-    "OsuSkinsDir": "./Skins"
+    "OsuSongsDir": "/home/runner/work/test/test/Songs",
+    "OsuSkinsDir": "/home/runner/work/test/test/Skins"
   },
   "Skin": {
     "CurrentSkin": "ryanstolefromkevin",
