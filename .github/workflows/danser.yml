@@ -30,10 +30,14 @@ jobs:
       run: |
         wget -O replay.osr ${{ github.event.inputs.replayurl }}
         curl ${{ github.event.inputs.replayurl }} --create-dirs -o Skins/ryanstolefromkevin.zip
-        unzip Skins/ryanstolefromkevin.zip
+        # 7z x Skins/ryanstolefromkevin.zip
         # cd Skins && zip -FF repair.zip --out ryanstolefromkevin.zip | unzip
         # jar xvf Skins/ryanstolefromkevin/ryanstolefromkevin.zip
  
+    - uses: edgarrc/action-7z@v1
+      with:
+        args: "7z x Skins/ryanstolefromkevin.zip"
+
     - name: install dependencies
       run: npm install node-osr node-fetch@v2 wget-improved --save
 
