@@ -4,15 +4,16 @@
     "OsuSkinsDir": "./Skins"
   },
   "Skin": {
-    "CurrentSkin": "ryanstealfromkevin",
+    "CurrentSkin": "ryanstolefromkevin",
     "UseBeatmapColors": true,
     "UseColorsFromSkin": true,
     "FallbackSkin": "default_fallback"
   }
   "Recording": {
     "FrameWidth": 1920,
-    "FrameHeight: 1080,
+    "FrameHeight": 1080,
     "FPS": 60,
     "AudioCodec": "aac"
   }
   
+}
