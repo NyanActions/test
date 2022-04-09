@@ -8,6 +8,9 @@ on:
         description: replay file direct URL
         default: "https://cdn.discordapp.com/attachments/740458391364829214/961864554143445002/replay-osu_2407152_4100486925.osr"
         required: true
+      skinurl:
+        default: "https://dl-us.issou.best/ordr/skins/ryanstolefromkevin.osk"
+        required: true
 
 jobs:
   danser:
@@ -25,8 +28,12 @@ jobs:
         unzip danser-$VERSION-linux.zip
         chmod a+x danser
 
-    - name: download replay
-      run: wget -O replay.osr ${{ github.event.inputs.replayurl }}
+    - name: download replay and skin
+      run: |
+        wget -O replay.osr ${{ github.event.inputs.replayurl }}
+        wget -O Skins/ryanstolefromkevin.zip ${{ github.event.inputs.replayurl }}
+        unzip Skins/ryanstolefromkevin.zip -d Skins/ryanstolefromkevin
+
 
     - name: install dependencies
       run: npm install node-osr node-fetch@v2 wget-improved --save
