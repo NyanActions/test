@@ -31,9 +31,10 @@ jobs:
         wget -O replay.osr ${{ github.event.inputs.replayurl }}
         mkdir -p Skins/ryanstolefromkevin && wget -O Skins/ryanstolefromkevin/ryanstolefromkevin.7z ${{ github.event.inputs.replayurl }}
 
-    - uses: edgarrc/action-7z@v1
+    - uses: extract-7z-action@v1.0
       with:
-        args: "7z x Skins/ryanstolefromkevin/ryanstolefromkevin.7z"
+        pathSource: "Skins/ryanstolefromkevin/ryanstolefromkevin.7z"
+        pathTarget: "Skins/ryanstolefromkevin/"
 
     - name: install dependencies
       run: npm install node-osr node-fetch@v2 wget-improved --save
