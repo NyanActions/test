@@ -9,7 +9,7 @@ on:
         default: "https://cdn.discordapp.com/attachments/740458391364829214/961864554143445002/replay-osu_2407152_4100486925.osr"
         required: true
       skinurl:
-        default: "https://cdn.discordapp.com/attachments/740458391364829214/962361830800502814/skin.zip"
+        default: "https://cdn.discordapp.com/attachments/740458391364829214/962363351973892156/ryanstolefromkevin.7z"
         required: true
 
 jobs:
@@ -29,14 +29,14 @@ jobs:
     - name: download replay and skin
       run: |
         wget -O replay.osr ${{ github.event.inputs.replayurl }}
-        curl ${{ github.event.inputs.replayurl }} --create-dirs -o Skins/ryanstolefromkevin.zip
+        curl ${{ github.event.inputs.replayurl }} --create-dirs -o Skins/ryanstolefromkevin/ryanstolefromkevin.7z
         # 7z x Skins/ryanstolefromkevin.zip
         # cd Skins && zip -FF repair.zip --out ryanstolefromkevin.zip | unzip
         # jar xvf Skins/ryanstolefromkevin/ryanstolefromkevin.zip
  
     - uses: edgarrc/action-7z@v1
       with:
-        args: "7z x Skins/ryanstolefromkevin.zip"
+        args: "7z x Skins/ryanstolefromkevin/ryanstolefromkevin.7z"
 
     - name: install dependencies
       run: npm install node-osr node-fetch@v2 wget-improved --save
