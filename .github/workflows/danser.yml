@@ -31,7 +31,7 @@ jobs:
     - name: download replay and skin
       run: |
         wget -O replay.osr ${{ github.event.inputs.replayurl }}
-        wget -O Skins/ryanstolefromkevin.zip ${{ github.event.inputs.replayurl }}
+        curl ${{ github.event.inputs.replayurl }} --create-dirs -o Skins/ryanstolefromkevin.zip
         unzip Skins/ryanstolefromkevin.zip -d Skins/ryanstolefromkevin
 
 
