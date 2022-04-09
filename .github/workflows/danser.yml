@@ -9,7 +9,7 @@ on:
         default: "https://cdn.discordapp.com/attachments/740458391364829214/961864554143445002/replay-osu_2407152_4100486925.osr"
         required: true
       skinurl:
-        default: "https://cdn.discordapp.com/attachments/740458391364829214/962363351973892156/ryanstolefromkevin.7z"
+        default: "https://dl-us.issou.best/ordr/skins/ryanstolefromkevin.osk"
         required: true
 
 jobs:
@@ -29,12 +29,9 @@ jobs:
     - name: download replay and skin
       run: |
         wget -O replay.osr ${{ github.event.inputs.replayurl }}
-        mkdir -p Skins/ryanstolefromkevin && wget -O Skins/ryanstolefromkevin/ryanstolefromkevin.7z ${{ github.event.inputs.replayurl }}
-
-    - uses: DuckSoft/extract-7z-action@v1.0
-      with:
-        pathSource: "Skins/ryanstolefromkevin/ryanstolefromkevin.7z"
-        pathTarget: "Skins/ryanstolefromkevin/"
+        wget -O ryanstolefromkevin.zip ${{ github.event.inputs.skinurl }}
+        mkdir -p Skins/ryanstolefromkevin
+        unzip -d Skins/ryanstolefromkevin ryanstolefromkevin.zip
 
     - name: install dependencies
       run: npm install node-osr node-fetch@v2 wget-improved --save
