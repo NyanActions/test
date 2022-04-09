@@ -1,0 +1,39 @@
+name: egodocker
+on: workflow_dispatch
+
+jobs:
+  egodocker:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          git clone --recursive "https://git.kotworks.cyou/DHCPCP/osu-lazer-server.git" .
+          wget https://github.com/NyanArchive/osu-lazer-server/raw/89424d7a4294ff30765326cca49d83910d7fa999/OsuLazerServer/Dockerfile
+      - name: change mirror
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "rus.nerinyan.moe"
+          replace: "api.nerinyan.moe"
+          # include: "egolazer/**"
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.PACKAGE_TOKEN }}
+      - name: docker meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ghcr.io/nyanarchive/osu-lazer-server
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ghcr.io/nyanarchive/osu-lazer-server:master
+          labels: ${{ steps.meta.outputs.labels }}
