@@ -1,0 +1,62 @@
+# @aeongdesu please do not use this!
+# config idea from ordr-client
+name: danser
+on:
+  workflow_dispatch:
+    inputs:
+      replayurl:
+        description: replay file direct URL
+        default: "https://cdn.discordapp.com/attachments/740458391364829214/961864554143445002/replay-osu_2407152_4100486925.osr"
+        required: true
+
+jobs:
+  danser:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v3
+    - name: install ffmpeg
+      run: sudo apt-get update && sudo apt-get install ffmpeg -y
+    - name: download danser
+      env:
+        VERSION: "0.6.8"
+      run: |
+        wget https://github.com/Wieku/danser-go/releases/download/$VERSION/danser-$VERSION-linux.zip
+        unzip danser-$VERSION-linux.zip
+        chmod a+x danser
+
+    - name: download replay
+      run: wget -O replay.osr ${{ github.event.inputs.replayurl }}
+
+    - name: install dependencies
+      run: npm install node-osr node-fetch@v2 wget-improved --save
+
+    - name: get beatmap from replay and osu!api
+      uses: actions/github-script@v6
+      env:
+        API_KEY: ${{ secrets.OSU_API_TOKEN }}
+      id: md5
+      with:
+        result-encoding: string
+        script: |
+          const parser = require("node-osr")
+          const fetch = require("node-fetch")
+          const wget = require("wget-improved")
+          const fs = require("fs")
+          fs.mkdirSync(`${process.cwd()}/Songs`)
+          const util = require("util")
+          const streamPipeline = util.promisify(require("stream").pipeline)
+          const replay = await parser.readSync("./replay.osr")
+          const json = await fetch(`https://osu.ppy.sh/api/get_beatmaps?k=${process.env.API_KEY}&h=${replay.beatmapMD5}`).then(res => res.json())
+          const download = wget.download(`https://catboy.best/d/${json.beatmapset_id}`, `${process.cwd()}/Songs/beatmaps.osz`)
+          download.on("start", () => console.log("beatmap downloading..")
+          download.on("end", async () => {
+            console.log("beatmap download complete!")
+            return replay.beatmapMD5
+          })
+
+    - name: copy config.json
+      run: mkdir -p default/danser/ && cp config.json default/danser/
+
+    - name: run danser
+      run: ./danser --md5=${{ steps.md5.outputs.result }} --replay="replay.osr" -record
