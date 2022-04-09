@@ -33,7 +33,7 @@ jobs:
 
     - uses: edgarrc/action-7z@v1
       with:
-        args: "cd Skins/ryanstolefromkevin/ryanstolefromkevin.7z && 7z x ryanstolefromkevin.7z"
+        args: "7z x Skins/ryanstolefromkevin/ryanstolefromkevin.7z"
 
     - name: install dependencies
       run: npm install node-osr node-fetch@v2 wget-improved --save
