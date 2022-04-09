@@ -9,7 +9,7 @@ on:
         default: "https://cdn.discordapp.com/attachments/740458391364829214/961864554143445002/replay-osu_2407152_4100486925.osr"
         required: true
       skinurl:
-        default: "https://dl-us.issou.best/ordr/skins/ryanstolefromkevin.osk"
+        default: "https://cdn.discordapp.com/attachments/740458391364829214/962361830800502814/skin.zip"
         required: true
 
 jobs:
@@ -29,9 +29,10 @@ jobs:
     - name: download replay and skin
       run: |
         wget -O replay.osr ${{ github.event.inputs.replayurl }}
-        curl ${{ github.event.inputs.replayurl }} --create-dirs -o Skins/ryanstolefromkevin/ryanstolefromkevin.zip
+        curl ${{ github.event.inputs.replayurl }} --create-dirs -o Skins/ryanstolefromkevin.zip
+        unzip Skins/ryanstolefromkevin.zip
         # cd Skins && zip -FF repair.zip --out ryanstolefromkevin.zip | unzip
-        jar xvf Skins/ryanstolefromkevin/ryanstolefromkevin.zip
+        # jar xvf Skins/ryanstolefromkevin/ryanstolefromkevin.zip
  
     - name: install dependencies
       run: npm install node-osr node-fetch@v2 wget-improved --save
