@@ -1,0 +1,20 @@
+name: delete workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: 'repo name'
+        default: 'nyanactions/test'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Mattraks/delete-workflow-runs@main
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          repository: ${{ github.event.inputs.repo }}
+          retain_days: 0
+          keep_minimum_runs: 0
