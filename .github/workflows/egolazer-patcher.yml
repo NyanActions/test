@@ -1,0 +1,66 @@
+name: lazer-patcher
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os.name }}
+    strategy:
+      matrix:
+        os: 
+          - { arch: win-x64, name: windows-latest }
+          - { arch: osx-x64, name: macos-latest }
+          - { arch: linux-x64, name: ubuntu-latest }
+
+    steps:
+      - run: git clone https://git.kotworks.cyou/DHCPCP/Patcher.git .
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.x
+      - name: Find and Replace
+        uses: mingjun97/file-regex-replace@master
+        with:
+          regex: 'https:\/\/\w*\.dhcpcd\.xyz'
+          replacement: "https://lazer.aeong.one"
+        #  include: "osu-lazer-dll-patcher/Program.cs"
+      - name: check domain has been changed
+        run: cat osu-lazer-dll-patcher/Program.cs
+      - name: Build
+        run: dotnet publish -c Release --output build/ --self-contained --runtime ${{ matrix.os.arch }} -p:PublishSingleFile=True
+      - name: Upload to artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: lazer-patcher-${{ matrix.os.arch }}
+          path: build/
+
+  android:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          repository: "ppy/osu"
+          submodules: "recursive"
+      - name: Set default Xamarin SDK version
+        run: |
+            $VM_ASSETS/select-xamarin-sdk-v2.sh --mono=6.12 --android=11.2
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+      - name: Find and Replace
+        uses: mingjun97/file-regex-replace@master
+        with:
+          regex: 'https:\/\/\w*\.ppy\.sh'
+          replacement: "https://lazer.aeong.one"
+          include: "osu.Game/Online/ProductionEndpointConfiguration.cs"
+      - name: check domain has been changed
+        run: cat osu.Game/Online/ProductionEndpointConfiguration.cs
+      - name: Build
+        run: msbuild osu.Android/osu.Android.csproj /restore /t:PackageForAndroid /t:SignAndroidPackage /p:Configuration=Release
+      - name: Upload to artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: lazer-android
+          path: osu.Android/bin/Release/sh.ppy.osulazer-Signed.apk
+
