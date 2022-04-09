@@ -1,0 +1,18 @@
+{
+  "General": {
+    "OsuSongsDir": "./Songs",
+    "OsuSkinsDir": "./Skins"
+  },
+  "Skin": {
+    "CurrentSkin": "ryanstealfromkevin",
+    "UseBeatmapColors": true,
+    "UseColorsFromSkin": true,
+    "FallbackSkin": "default_fallback"
+  }
+  "Recording": {
+    "FrameWidth": 1920,
+    "FrameHeight: 1080,
+    "FPS": 60,
+    "AudioCodec": "aac"
+  }
+  
