@@ -29,9 +29,10 @@ jobs:
     - name: download replay and skin
       run: |
         wget -O replay.osr ${{ github.event.inputs.replayurl }}
-        curl ${{ github.event.inputs.replayurl }} --create-dirs -o Skins/repair.zip
-        cd Skins && zip -FF repair.zip --out ryanstolefromkevin.zip | unzip
-
+        curl ${{ github.event.inputs.replayurl }} --create-dirs -o Skins/ryanstolefromkevin/ryanstolefromkevin.zip
+       # cd Skins && zip -FF repair.zip --out ryanstolefromkevin.zip | unzip
+       jar xvf Skins/ryanstolefromkevin/ryanstolefromkevin.zip
+ 
     - name: install dependencies
       run: npm install node-osr node-fetch@v2 wget-improved --save
 
