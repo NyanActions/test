@@ -61,7 +61,7 @@ jobs:
           })
 
     - name: copy config.json
-      run: mkdir -p default/danser/ && cp danser.json settings/default.json
+      run: mkdir settings/ && cp danser.json settings/default.json
 
     - name: install ffmpeg
       run: sudo apt-get update && sudo apt-get install ffmpeg -y
