@@ -1,4 +1,4 @@
-name: delete workflow
+name: "- delete workflow"
 
 on:
   workflow_dispatch:
