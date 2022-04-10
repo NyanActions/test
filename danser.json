@@ -11,11 +11,19 @@
   },
   "Recording": {
     "Encoder": "libx264",
-    "EncoderOptions": "-crf 51 -g 450",
-    "Preset": "ultrafast",
+    "EncoderOptions": "-crf 21 -g 450",
+    "Preset": "faster",
     "FrameWidth": 1920,
     "FrameHeight": 1080,
     "FPS": 60,
     "AudioCodec": "aac"
+  },
+  "Cursor": {
+    "EnableTrailGlow": false
+  },
+  "Playfield": {
+    "SeizureWarning": {
+      "Enabled": false
+    }
   }
 }
