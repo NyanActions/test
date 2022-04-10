@@ -70,4 +70,6 @@ jobs:
       run: sudo apt-get update && sudo apt-get install ffmpeg freeglut3-dev -y
 
     - name: run danser
-      run: ./danser --md5=${{ steps.md5.outputs.result }} --replay="replay.osr" -record
+      uses: GabrielBB/xvfb-action@v1
+      with:
+        run: './danser --md5=${{ steps.md5.outputs.result }} --replay="replay.osr" -record'
