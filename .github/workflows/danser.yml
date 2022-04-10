@@ -67,7 +67,7 @@ jobs:
       run: mkdir settings/ && cp danser.json settings/default.json
 
     - name: install ffmpeg
-      run: sudo apt-get update && sudo apt-get install ffmpeg freeglut3-dev -y && 
+      run: sudo apt-get update && sudo apt-get install ffmpeg freeglut3-dev -y
 
     - name: run danser
       run: ./danser --md5=${{ steps.md5.outputs.result }} --replay="replay.osr" -record
