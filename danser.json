@@ -14,7 +14,8 @@
   },
   "Recording": {
     "Encoder": "libx264",
-    "EncoderOptions": "-crf 21 -g 450",
+    "EncoderOptions": "-crf 18 -g 450",
+    "Profile": "high",
     "Preset": "faster",
     "FrameWidth": 1920,
     "FrameHeight": 1080,
