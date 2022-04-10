@@ -61,8 +61,8 @@ jobs:
           download.on("start", () => console.log("beatmap downloading.."))
           download.on("end", async () => {
             console.log("beatmap download complete!")
-            return replay.beatmapMD5
           })
+          return replay.beatmapMD5
 
     - name: copy config.json
       run: mkdir settings/ && cp danser.json settings/default.json
