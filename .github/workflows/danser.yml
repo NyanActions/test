@@ -54,9 +54,8 @@ jobs:
           const replay = await parser.readSync("./replay.osr")
           console.log("replay detected!")
           console.log(`md5: ${replay.beatmapMD5}`)
-          const jsons = await fetch(`https://osu.ppy.sh/api/get_beatmaps?k=${process.env.API_KEY}&h=${replay.beatmapMD5}`).then(res => res.json())
-          const json= jsons[0]
-          const download = wget.download(`https://catboy.best/d/${json.beatmapset_id}`, `${process.cwd()}/Songs/beatmaps.osz`)
+          const json = (await (await fetch(`https://osu.ppy.sh/api/get_beatmaps?k=${process.env.API_KEY}&h=${replay.beatmapMD5}`)).json())[0]
+          const download = wget.download(`https://beatconnect.io/b/${json.beatmapset_id}`, `${process.cwd()}/Songs/beatmaps.osz`)
           console.log(`setid: ${json.beatmapset_id}`)
           download.on("start", () => console.log("beatmap downloading.."))
           download.on("end", async () => {
@@ -68,7 +67,7 @@ jobs:
       run: mkdir settings/ && cp danser.json settings/default.json
 
     - name: install ffmpeg
-      run: sudo apt-get update && sudo apt-get install ffmpeg -y
+      run: sudo apt-get update && sudo apt-get install ffmpeg freeglut3-dev -y && 
 
     - name: run danser
       run: ./danser --md5=${{ steps.md5.outputs.result }} --replay="replay.osr" -record
