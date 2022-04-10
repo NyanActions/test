@@ -52,8 +52,11 @@ jobs:
           const util = require("util")
           const streamPipeline = util.promisify(require("stream").pipeline)
           const replay = await parser.readSync("./replay.osr")
+          console.log("replay detected!")
+          console.log(`md5: ${replay.beatmapMD5}`)
           const json = await fetch(`https://osu.ppy.sh/api/get_beatmaps?k=${process.env.API_KEY}&h=${replay.beatmapMD5}`).then(res => res.json())
           const download = wget.download(`https://catboy.best/d/${json.beatmapset_id}`, `${process.cwd()}/Songs/beatmaps.osz`)
+          console.log(`setid: ${json.beatmapset_id}`)
           download.on("start", () => console.log("beatmap downloading.."))
           download.on("end", async () => {
             console.log("beatmap download complete!")
