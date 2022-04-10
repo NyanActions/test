@@ -39,7 +39,7 @@ jobs:
     - name: get beatmap from replay and osu!api
       uses: actions/github-script@v6
       env:
-        API_KEY: ${{ secrets.OSU_API_TOKEN }}
+        API_KEY: ${{ secrets.API_KEY }}
       id: md5
       with:
         result-encoding: string
@@ -54,7 +54,7 @@ jobs:
           const replay = await parser.readSync("./replay.osr")
           console.log("replay detected!")
           console.log(`md5: ${replay.beatmapMD5}`)
-          const json = await (await fetch(`https://osu.ppy.sh/api/get_beatmaps?k=${process.env.API_KEY}&h=${replay.beatmapMD5}`).then(res => res.json()))[0]
+          const json = (await fetch(`https://osu.ppy.sh/api/get_beatmaps?k=${process.env.API_KEY}&h=${replay.beatmapMD5}`).then(res => res.json()))[0]
           console.log(json)
           const download = wget.download(`https://beatconnect.io/b/${json.beatmapset_id}`, `${process.cwd()}/Songs/beatmaps.osz`)
           download.on("start", () => console.log("beatmap downloading.."))
