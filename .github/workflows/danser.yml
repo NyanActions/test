@@ -25,6 +25,7 @@ jobs:
         wget https://github.com/Wieku/danser-go/releases/download/$VERSION/danser-$VERSION-linux.zip
         unzip danser-$VERSION-linux.zip
         chmod a+x danser
+        echo ${{ secrets.API_KEY }} >> api.txt
 
     - name: download replay and skin
       run: |
@@ -73,3 +74,10 @@ jobs:
       uses: GabrielBB/xvfb-action@v1
       with:
         run: './danser --md5=${{ steps.md5.outputs.result }} --replay="replay.osr" -record'
+
+
+    - name: upload rendered video to artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ steps.md5.outputs.result }}
+        path: videos/*.mp4
