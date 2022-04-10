@@ -1,7 +1,7 @@
 {
   "General": {
-    "OsuSongsDir": "/home/runner/work/test/test/Songs",
-    "OsuSkinsDir": "/home/runner/work/test/test/Skins"
+    "OsuSongsDir": "Songs",
+    "OsuSkinsDir": "Skins"
   },
   "Skin": {
     "CurrentSkin": "ryanstolefromkevin",
@@ -10,6 +10,9 @@
     "FallbackSkin": "default_fallback"
   },
   "Recording": {
+    "Encoder": "h264_qsv",
+    "EncoderOptions": "-global_quality 51 -g 450",
+    "Preset": "veryfast",
     "FrameWidth": 1920,
     "FrameHeight": 1080,
     "FPS": 60,
