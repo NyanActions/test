@@ -53,6 +53,7 @@
       "Enabled": false
     },
     "Background": {
+      "FlashToTheBeat": false,
       "Dim": {
         "Normal": 0.85
       },
@@ -69,6 +70,21 @@
         "In": false,
         "Out": false
       }
+    },
+    "Colors": {
+      "Sliders": {
+        "Border": {
+          "Color": {
+            "FlashToTheBeat": false
+          }
+        },
+        "Body": {
+          "Color": {
+            "FlashToTheBeat": false
+          }
+        }
+      }
     }
+
   }
 }
