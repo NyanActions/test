@@ -4,7 +4,7 @@
     "OsuSkinsDir": "Skins"
   },
   "Skin": {
-    "CurrentSkin": "ryanstolefromkevin",
+    "CurrentSkin": "extracted",
     "UseBeatmapColors": true,
     "UseColorsFromSkin": true,
     "FallbackSkin": "default_fallback",
