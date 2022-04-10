@@ -7,7 +7,10 @@
     "CurrentSkin": "ryanstolefromkevin",
     "UseBeatmapColors": true,
     "UseColorsFromSkin": true,
-    "FallbackSkin": "default_fallback"
+    "FallbackSkin": "default_fallback",
+    "Cursor": {
+      "UseSkinCursor": true
+    }
   },
   "Recording": {
     "Encoder": "libx264",
@@ -16,14 +19,56 @@
     "FrameWidth": 1920,
     "FrameHeight": 1080,
     "FPS": 60,
-    "AudioCodec": "aac"
+    "AudioCodec": "aac",
+    "AudioOptions": "-b:a 192k"
   },
   "Cursor": {
-    "EnableTrailGlow": false
+    "EnableTrailGlow": false,
+    "Colors": {
+      "EnableRainbow": false
+    }
+  },
+  "Gameplay": {
+    "Boundaries": {
+      "Enabled": false
+    },
+    "HitErrorMeter": {
+      "Show": true,
+      "ShowUnstableRate": true
+    },
+    "KeyOverlay": {
+      "Show": true
+    },
+    "ScoreBoard": {
+      "Show": true
+    }
   },
   "Playfield": {
+    "Logo": {
+      "Dim": {
+        Intro: 1
+      }
+    },
     "SeizureWarning": {
       "Enabled": false
-    }
+    },
+    "Background": {
+      "Dim": {
+        "Normal": 0.85
+      },
+      "Parallax": {
+        "Amount": 0
+      }
+    },
+    "LoadStoryboards": true,
+    "LoadVideos": true
+  },
+  "Objects": {
+    "Sliders": {
+      "Snaking": {
+        "In": false,
+        "Out": false
+      }
+    },
   }
 }
