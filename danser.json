@@ -29,6 +29,7 @@
     }
   },
   "Gameplay": {
+    "ShowHitLighting" false,
     "Boundaries": {
       "Enabled": false
     },
