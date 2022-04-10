@@ -10,9 +10,9 @@
     "FallbackSkin": "default_fallback"
   },
   "Recording": {
-    "Encoder": "h264_qsv",
-    "EncoderOptions": "-global_quality 51 -g 450",
-    "Preset": "veryfast",
+    "Encoder": "libx264",
+    "EncoderOptions": "-crf 51 -g 450",
+    "Preset": "ultrafast",
     "FrameWidth": 1920,
     "FrameHeight": 1080,
     "FPS": 60,
