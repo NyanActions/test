@@ -37,10 +37,20 @@
       "Show": true,
       "ShowUnstableRate": true
     },
+    "AimErrorMeter": {
+      "hudElementPosition": {
+        "hudElement": {
+          "Show": true
+        }
+      }
+    },
     "KeyOverlay": {
       "Show": true
     },
     "ScoreBoard": {
+      "Show": true
+    },
+    "StrainGraph": {
       "Show": true
     }
   },
