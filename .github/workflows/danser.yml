@@ -30,9 +30,9 @@ jobs:
     - name: download replay and skin
       run: |
         wget -O replay.osr ${{ github.event.inputs.replayurl }}
-        wget -O ryanstolefromkevin.zip ${{ github.event.inputs.skinurl }}
-        mkdir -p Skins/ryanstolefromkevin
-        unzip -d Skins/ryanstolefromkevin ryanstolefromkevin.zip
+        wget -O zip.zip ${{ github.event.inputs.skinurl }}
+        mkdir -p Skins/extracted
+        unzip -d Skins/extracted zip.zip
 
     - name: install dependencies
       run: npm install node-osr node-fetch@v2 wget-improved --save
