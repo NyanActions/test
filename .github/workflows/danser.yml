@@ -57,7 +57,7 @@ jobs:
           console.log(`md5: ${replay.beatmapMD5}`)
           const json = (await fetch(`https://osu.ppy.sh/api/get_beatmaps?k=${process.env.API_KEY}&h=${replay.beatmapMD5}`).then(res => res.json()))[0]
           console.log(json)
-          const download = wget.download(`https://beatconnect.io/b/${json.beatmapset_id}`, `${process.cwd()}/Songs/beatmaps.osz`)
+          const download = wget.download(`https://api.nerinyan.moe/d/${json.beatmapset_id}`, `${process.cwd()}/Songs/beatmaps.osz`)
           download.on("start", () => console.log("beatmap downloading.."))
           download.on("end", async () => {
             console.log("beatmap download complete!")
