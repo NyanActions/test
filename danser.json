@@ -39,11 +39,7 @@
       "ShowUnstableRate": true
     },
     "AimErrorMeter": {
-      "hudElementPosition": {
-        "hudElement": {
-          "Show": true
-        }
-      }
+      "Show": true
     },
     "KeyOverlay": {
       "Show": true
