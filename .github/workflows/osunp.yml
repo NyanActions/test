@@ -15,7 +15,7 @@ jobs:
         with:
           dotnet-version: 6.x
       - name: Build
-        run: dotnet build OsuNowPlaying/OsuNowPlaying.csproj --configuration Release -o build/ --self-contained --runtime win-x86 -p:PublishSingleFile=True
+        run: dotnet build OsuNowPlaying/OsuNowPlaying.csproj --configuration Release -o build/
       - name: Upload to artifact
         uses: actions/upload-artifact@v2
         with:
