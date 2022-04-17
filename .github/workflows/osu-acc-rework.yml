@@ -6,7 +6,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: clone osu
-        run: git clone https://github.com/02Naitsirk/osu -b statistical_acc_pp
+        run: git clone --recursive https://github.com/02Naitsirk/osu -b statistical_acc_pp
       - name: clone osu-tools-gui
         uses: actions/checkout@v3
         with:
