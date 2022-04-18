@@ -27,7 +27,6 @@ jobs:
           path: build/
       - name: upload on GoFile
         run: |
-          TOKEN=$(curl -s 'https://api.gofile.io/createAccount' | jq -r '.data|.token')
           SERVER=$(curl -s https://api.gofile.io/getServer | jq  -r '.data|.server')
-          URL=$(curl -X POST -# -F token="$TOKEN" https://"$SERVER".gofile.io/uploadFile | jq -r '.data|.downloadPage')
-          echo "wip"
+          URL=$(curl --request POST --url https://"$SERVER".gofile.io/uploadFile --form file=@windows-accrework.zip | jq -r '.data|.downloadPage')
+          echo $(URL)
