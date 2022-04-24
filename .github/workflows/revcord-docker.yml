@@ -1,5 +1,5 @@
 name: docker
-on: push
+on: workflow_dispatch
 
 jobs:
   docker:
