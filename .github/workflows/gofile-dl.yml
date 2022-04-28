@@ -13,8 +13,9 @@ jobs:
           script: |
             const fetch = require("node-fetch")
             const wget = require("wget-improved")
-            const token = await(await fetch("https://api.gofile.io/createAccount").then(res => res.json())).data.token
-            const file = await(await fetch("https://gofile.io/d/oQ2OJ9").then(res => res.json())).data.contents[0]
+            const token = await (await fetch("https://api.gofile.io/createAccount").then(res => res.json())).data.token
+            const files = await (await fetch("https://gofile.io/d/oQ2OJ9").then(res => res.json())).data.contents
+            const file = files.data.contents[Object.keys(files)[0]]
             const download = wget.download(file.link, file.name, { headers: { "token": token } })
           
             download.on("error", function(err) {
