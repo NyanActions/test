@@ -9,7 +9,9 @@ jobs:
       - uses: actions/setup-node@v3
       - run: npm install node-fetch@v2 wget-improved --save
       - uses: actions/github-script@v6
+        id: file
         with:
+          result-encoding: string
           script: |
             const fetch = require("node-fetch")
             const wget = require("wget-improved")
@@ -27,4 +29,10 @@ jobs:
             })
             download.on("end", function(output) {
               console.log(output)
+              return output
             })
+      - name: upload rendered video to artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.file.outputs.result }}
+          path: ${{ steps.file.outputs.result }}
