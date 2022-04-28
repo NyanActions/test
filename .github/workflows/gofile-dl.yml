@@ -29,8 +29,8 @@ jobs:
             })
             download.on("end", function(output) {
               console.log(output)
-              return output
             })
+            return file.name
       - name: upload rendered video to artifact
         uses: actions/upload-artifact@v3
         with:
