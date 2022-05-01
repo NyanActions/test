@@ -19,7 +19,7 @@ jobs:
             const files = (await fetch(`https://api.gofile.io/getContent?contentId=oQ2OJ9&token=${token}&websiteToken=12345&cache=true`).then(res => res.json())).data.contents
             console.log(files)
             const file = files[Object.keys(files)[0]]
-            const download = wget.download(file.link, file.name, { headers: { "Cookie": `accountToken=${token}` } })
+            const download = wget.download(file.link, file.name, { headers: { "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.48 Safari/537.36", "Cookie": `accountToken=${token}` } })
           
             download.on("error", function(err) {
               console.log(err)
@@ -31,7 +31,7 @@ jobs:
               console.log(output)
             })
             return file.name
-      - name: upload rendered video to artifact
+      - name: upload file to artifact
         uses: actions/upload-artifact@v3
         with:
           name: ${{ steps.file.outputs.result }}
