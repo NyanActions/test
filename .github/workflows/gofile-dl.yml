@@ -7,29 +7,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v3
-      - run: npm install node-fetch@v2 wget-improved --save
+      - run: npm install node-fetch@v2 --save
       - uses: actions/github-script@v6
         id: file
         with:
           result-encoding: string
           script: |
             const fetch = require("node-fetch")
-            const wget = require("wget-improved")
+            const fs = require("fs")
             const token = (await fetch("https://api.gofile.io/createAccount").then(res => res.json())).data.token
             const files = (await fetch(`https://api.gofile.io/getContent?contentId=oQ2OJ9&token=${token}&websiteToken=12345&cache=true`).then(res => res.json())).data.contents
             console.log(files)
             const file = files[Object.keys(files)[0]]
-            const download = wget.download(file.link, file.name, { headers: { "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.48 Safari/537.36", "Cookie": `accountToken=${token}` } })
-          
-            download.on("error", function(err) {
-              console.log(err)
-            })
-            download.on("start", function(fileSize) {
-              console.log(fileSize)
-            })
-            download.on("end", function(output) {
-              console.log(output)
-            })
+            await fetch(file.link, { headers: { "Cookie": `accountToken=${token}`} }).then(res => res.body.pipe(fs.createWriteStream(file.name))
             return file.name
       - name: upload file to artifact
         uses: actions/upload-artifact@v3
