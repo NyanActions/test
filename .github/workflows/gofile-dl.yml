@@ -19,11 +19,9 @@ jobs:
             const files = (await fetch(`https://api.gofile.io/getContent?contentId=oQ2OJ9&token=${token}&websiteToken=12345&cache=true`).then(res => res.json())).data.contents
             console.log(files)
             const file = files[Object.keys(files)[0]]
-            const fileobject = Object.keys(files)
-            await fetch(file.link, { headers: { "Cookie": `accountToken=${token}`} }).then(res => res.body.pipe(fs.createWriteStream(file.name)))
-            for (onefile of fileobject) {
-              await fetch(oneflie.link, { headers: { "Cookie": `accountToken=${token}`} }).then(res => res.ok)
-            }
+            // await fetch(file.link, { headers: { "Cookie": `accountToken=${token}`} }).then(res => res.body.pipe(fs.createWriteStream(file.name)))
+            await fetch(file.link, { headers: { "Cookie": `accountToken=${token}`} }).then(res => res.ok)
+            
             return file.name
       - name: upload file to artifact
         uses: actions/upload-artifact@v3
