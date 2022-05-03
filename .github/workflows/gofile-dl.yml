@@ -1,6 +1,10 @@
 name: "gofile dl test"
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      just_dl_status:
+        type: boolean
 
 jobs:
   dltest:
@@ -10,6 +14,8 @@ jobs:
       - run: npm install node-fetch@v2 --save
       - uses: actions/github-script@v6
         id: file
+        env:
+          IS_TRUE: ${{ github.event.inputs.if_std }}
         with:
           result-encoding: string
           script: |
@@ -19,8 +25,8 @@ jobs:
             const files = (await fetch(`https://api.gofile.io/getContent?contentId=oQ2OJ9&token=${token}&websiteToken=12345&cache=true`).then(res => res.json())).data.contents
             console.log(files)
             const file = files[Object.keys(files)[0]]
-            // await fetch(file.link, { headers: { "Cookie": `accountToken=${token}`} }).then(res => res.body.pipe(fs.createWriteStream(file.name)))
-            await fetch(file.link, { headers: { "Cookie": `accountToken=${token}`} }).then(res => res.ok)
+            if (!process.env.IS_TRUE) await fetch(file.link, { headers: { "Cookie": `accountToken=${token}`} }).then(res => res.body.pipe(fs.createWriteStream(file.name)))
+            else await fetch(file.link, { headers: { "Cookie": `accountToken=${token}`} }).then(res => res.ok)
             
             return file.name
       - name: upload file to artifact
