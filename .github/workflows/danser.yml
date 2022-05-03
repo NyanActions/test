@@ -9,7 +9,8 @@ on:
         default: "https://cdn.discordapp.com/attachments/599606782079533069/960130658234163230/HDDTHR_-_angela_-_Otome_no_Route_wa_Hitotsu_Janai_Bakarina_2022-03-18_Osu.osr"
         required: true
       skinurl:
-        default: "https://dl-us.issou.best/ordr/skins/ryanstolefromkevin.osk"
+        # default: "https://dl-us.issou.best/ordr/skins/ryanstolefromkevin.osk"
+        default: ${{ secrets.OSU_SKIN }}
         required: true
 
 jobs:
@@ -83,9 +84,12 @@ jobs:
       with:
         run: './danser --md5=${{ steps.md5.outputs.result }} --replay="replay.osr" -record'
 
-
     - name: upload rendered video to artifact
       uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.md5.outputs.result }}
         path: videos/*.mp4
+
+    - name: upload to web3.storage
+      run: echo wip
+
