@@ -15,7 +15,7 @@ jobs:
       - uses: actions/github-script@v6
         id: file
         env:
-          IS_TRUE: ${{ github.event.inputs.if_std }}
+          IS_TRUE: ${{ github.event.inputs.just_dl_status }}
         with:
           result-encoding: string
           script: |
@@ -25,7 +25,7 @@ jobs:
             const files = (await fetch(`https://api.gofile.io/getContent?contentId=oQ2OJ9&token=${token}&websiteToken=12345&cache=true`).then(res => res.json())).data.contents
             console.log(files)
             const file = files[Object.keys(files)[0]]
-            if (!process.env.IS_TRUE) await fetch(file.link, { headers: { "Cookie": `accountToken=${token}`} }).then(res => res.body.pipe(fs.createWriteStream(file.name)))
+            if (!Boolean(process.env.IS_TRUE)) await fetch(file.link, { headers: { "Cookie": `accountToken=${token}`} }).then(res => res.body.pipe(fs.createWriteStream(file.name)))
             else await fetch(file.link, { headers: { "Cookie": `accountToken=${token}`} }).then(res => res.ok)
             
             return file.name
