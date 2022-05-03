@@ -31,7 +31,7 @@ jobs:
       run: |
         wget -O replay.osr ${{ github.event.inputs.replayurl }}
         # wget -O osu.zip ${{ github.event.inputs.skinurl }}
-        wget -O skin.zip ${{ secrets.OSU_SKIN }}
+        wget -O skin.zip ${{ secrets.SKIN }}
         mkdir -p Skins/extracted
         unzip -d Skins/extracted osu.zip
 
