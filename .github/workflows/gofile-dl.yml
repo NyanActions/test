@@ -5,6 +5,9 @@ on:
     inputs:
       just_dl_status:
         type: boolean
+      id:
+        type: string
+        required: true
 
 jobs:
   dltest:
@@ -22,7 +25,7 @@ jobs:
             const fetch = require("node-fetch")
             const fs = require("fs")
             const token = (await fetch("https://api.gofile.io/createAccount").then(res => res.json())).data.token
-            const files = (await fetch(`https://api.gofile.io/getContent?contentId=oQ2OJ9&token=${token}&websiteToken=12345&cache=true`).then(res => res.json())).data.contents
+            const files = (await fetch(`https://api.gofile.io/getContent?contentId=${{ github.event.inputs.id }}&token=${token}&websiteToken=12345&cache=true`).then(res => res.json())).data.contents
             console.log(files)
             const file = files[Object.keys(files)[0]]
             if (process.env.IS_TRUE == 'false') await fetch(file.link, { headers: { "Cookie": `accountToken=${token}`} }).then(res => res.body.pipe(fs.createWriteStream(file.name)))
