@@ -28,7 +28,7 @@ jobs:
             const files = (await fetch(`https://api.gofile.io/getContent?contentId=${{ github.event.inputs.id }}&token=${token}&websiteToken=12345&cache=true`).then(res => res.json())).data.contents
             console.log(files)
             const file = files[Object.keys(files)[0]]
-            if ('${{ github.event.inputs.just_dl_status }}' == 'false' )) await fetch(file.link, { headers: { "Cookie": `accountToken=${token}`} }).then(res => res.body.pipe(fs.createWriteStream(file.name)))
+            if ('${{ github.event.inputs.just_dl_status }}' == 'false' ) await fetch(file.link, { headers: { "Cookie": `accountToken=${token}`} }).then(res => res.body.pipe(fs.createWriteStream(file.name)))
             else await fetch(file.link, { headers: { "Cookie": `accountToken=${token}`} }).then(res => res.ok)
             return file.name
             
