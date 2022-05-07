@@ -1,11 +1,10 @@
-FROM python:alpine
+FROM python:slim
 
-RUN apk add --no-cache curl gcc
+RUN apt-get update && \
+    apt-get install -y curl
 
-RUN pip install poetry
-
-#RUN curl -sSL https://install.python-poetry.org | python -
-#ENV PATH "/root/.local/bin:$PATH"
+RUN curl -sSL https://install.python-poetry.org | python -
+ENV PATH "/root/.local/bin:$PATH"
 
 RUN poetry install
 
