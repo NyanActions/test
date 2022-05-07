@@ -6,6 +6,9 @@ RUN apt-get update && \
 RUN curl -sSL https://install.python-poetry.org | python -
 ENV PATH "/root/.local/bin:$PATH"
 
+WORKDIR /app
+COPY . .
+
 RUN poetry install
 
 CMD ["poetry", "run", "python", "run.py"]
