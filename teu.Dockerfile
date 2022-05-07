@@ -6,8 +6,7 @@ RUN apt-get update && \
 	rm -rf /var/lib/apt/lists/*
 
 RUN curl -sSL https://install.python-poetry.org | python -
-# will work?
-# ENV PATH "/root/.local/bin:$PATH"
+ENV PATH "/root/.local/bin:$PATH"
 
 WORKDIR /app
 COPY . .
