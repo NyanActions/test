@@ -1,0 +1,17 @@
+name: web3 upload bruh
+
+on:
+  workflow_dispatch:
+
+jobs:
+  web3:
+    runs-on: ubuntu-latest
+    steps:
+      - run: mkdir ghactions && wget -P ghactions https://cdn-111.anonfiles.com/Nffd6eify3/dcd9c5fe-1653281756/ReviOS-10-21H2-22.05.ISO
+      - uses: web3-storage/add-to-web3@v1
+        id: web3
+        with:
+          web3_token: ${{ secrets.WEB3_STORAGE_TOKEN }}
+          path_to_add: 'ghactions'
+
+      - run: echo https://${{ steps.web3.outputs.cid }}.ipfs.infura-ipfs.io
