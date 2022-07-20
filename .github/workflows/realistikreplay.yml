@@ -1,0 +1,54 @@
+# @aeongdesu please do not use this!
+name: realistikreplay
+on:
+  workflow_dispatch:
+    inputs:
+      mapid:
+        default: "24428"
+        required: true
+      relax:
+        default: "true"
+        required: true
+
+jobs:
+  realistikreplay:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/setup-node@v3
+
+    - name: install dependencies
+      run: npm install node-fetch@v2 wget-improved --save
+
+    - name: get beatmap from replay and osu!api
+      uses: actions/github-script@v6
+      env:
+        MAPID: ${{ github.event.inputs.mapid }}
+        RELAX: ${{ github.event.inputs.relax }}
+      with:
+        result-encoding: string
+        script: |
+          const fetch = require("node-fetch")
+          const wget = require("wget-improved")
+          const fs = require("fs")
+          fs.mkdirSync(`${process.cwd()}/replays`)
+          
+          const scores = (await fetch(`https://ussr.pl/api/v1/scores?sort=score,desc&sort=id,asc&mode=0&b=${process.env.mapid}&p=1&l=50&rx=${Boolean(process.env.RELAX) ? 1 : 0}`).then(res => res.json())).scores
+          console.log(scores)
+          for (const score in scores) {
+          const json = scores[score]
+          const download = wget.download(`https://ussr.pl/web/replays/${json.id}`, `${process.cwd()}/replays/beatmaps.osr`)
+          download.on("error", () => {
+            console.log(`${json.user.username}'s replay download failed!`)
+          })
+          download.on("start", () => console.log(`${json.user.username}'s replay downloading..`))
+          download.on("end", async () => {
+            console.log(`${json.user.username}'s replay download complete!`)
+          })
+          }
+
+    - name: upload to artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ github.event.inputs.mapid }}
+        path: scores/*.osr
+        
