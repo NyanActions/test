@@ -32,8 +32,8 @@ jobs:
           const fs = require("fs")
           fs.mkdirSync(`${process.cwd()}/replays`)
           
-          const scores = (await fetch(`https://ussr.pl/api/v1/scores?sort=score%2Cdesc&sort=id%2Casc&mode=0&b=${process.env.mapid}&p=1&l=50&rx=${Boolean(process.env.RELAX) ? 1 : 0}`).then(res => res.json())).scores
-          console.log(scores)
+          const scores = (await fetch(`https://ussr.pl/api/v1/scores?sort=score%2Cdesc&sort=id%2Casc&mode=0&b=${process.env.MAPID}&p=1&l=50&rx=${Boolean(process.env.RELAX) ? 1 : 0}`).then(res => res.json())).scores
+          console.log(`${scores.length} replays found`)
           for (const score in scores) {
           const json = scores[score]
           const download = wget.download(`https://ussr.pl/web/replays/${json.id}`, `${process.cwd()}/replays/beatmaps.osr`)
