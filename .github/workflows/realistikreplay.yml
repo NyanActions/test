@@ -33,7 +33,7 @@ jobs:
           console.log(`${scores.length} replays found`)
           for (const score in scores) {
           const json = scores[score]
-          const download = wget.download(`https://ussr.pl/web/replays/${json.id}`, `${process.cwd()}/replays/beatmaps.osr`)
+          const download = wget.download(`https://ussr.pl/web/replays/${json.id}`, `${process.cwd()}/replays/${json.user.id} - ${json.user.username}.osr`)
           download.on("error", () => {
             console.log(`${json.user.username}'s replay download failed!`)
           })
