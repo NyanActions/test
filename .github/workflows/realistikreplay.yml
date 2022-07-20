@@ -7,7 +7,7 @@ on:
         default: "24428"
         required: true
       relax:
-        default: "true"
+        type: boolean
         required: true
 
 jobs:
@@ -21,9 +21,6 @@ jobs:
 
     - name: get beatmap from replay and osu!api
       uses: actions/github-script@v6
-      env:
-        MAPID: ${{ github.event.inputs.mapid }}
-        RELAX: ${{ github.event.inputs.relax }}
       with:
         result-encoding: string
         script: |
@@ -32,7 +29,7 @@ jobs:
           const fs = require("fs")
           fs.mkdirSync(`${process.cwd()}/replays`)
           
-          const scores = (await fetch(`https://ussr.pl/api/v1/scores?sort=score%2Cdesc&sort=id%2Casc&mode=0&b=${process.env.MAPID}&p=1&l=50&rx=${Boolean(process.env.RELAX) ? 1 : 0}`).then(res => res.json())).scores
+          const scores = (await fetch(`https://ussr.pl/api/v1/scores?sort=score%2Cdesc&sort=id%2Casc&mode=0&b=${{ github.event.inputs.mapid }}&p=1&l=50&rx=${Boolean(${{ github.event.inputs.relax }}) ? 1 : 0}`).then(res => res.json())).scores
           console.log(`${scores.length} replays found`)
           for (const score in scores) {
           const json = scores[score]
@@ -50,5 +47,5 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: ${{ github.event.inputs.mapid }}
-        path: scores/*.osr
+        path: replays/*.osr
         
