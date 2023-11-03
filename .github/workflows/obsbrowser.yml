@@ -12,10 +12,13 @@ jobs:
       - name: install required 
         run: pacman -Sy --noconfirm devtools btrfs-progs dbus sudo
       - name: make user for build
-        run: useradd -m user || true
+        run: |
+          useradd -m user
+          usermod -aG sudo user
+          echo "%sudo ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+          sed -i "s|MAKEFLAGS=.*|MAKEFLAGS=-j$(nproc)|" /etc/makepkg.conf
       - name: build
         run: |
-          sed -i "s|MAKEFLAGS=.*|MAKEFLAGS=-j$(nproc)|" /etc/makepkg.conf
           git clone https://aur.archlinux.org/obs-studio-browser.git
           chown -R user: obs-studio-browser
           cd obs-studio-browser
