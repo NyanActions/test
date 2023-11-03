@@ -19,7 +19,7 @@ jobs:
           sed -i "s|MAKEFLAGS=.*|MAKEFLAGS=-j$(nproc)|" /etc/makepkg.conf
       - name: build
         run: |
-          git clone https://aur.archlinux.org/obs-studio-browser.git
-          chown -R user: obs-studio-browser
+          cd /home/user
+          sudo -u user git clone https://aur.archlinux.org/obs-studio-browser.git
           cd obs-studio-browser
           sudo -u user makepkg -sc
