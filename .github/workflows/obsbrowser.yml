@@ -15,9 +15,8 @@ jobs:
         run: useradd -m user || true
       - name: build
         run: |
-          dbus-uuidgen --ensure=/etc/machine-id
           sed -i "s|MAKEFLAGS=.*|MAKEFLAGS=-j$(nproc)|" /etc/makepkg.conf
           git clone https://aur.archlinux.org/obs-studio-browser.git
           chown -R user: obs-studio-browser
           cd obs-studio-browser
-          extra-x86_64-build -- -U user
+          sudo -u user makepkg -sc
