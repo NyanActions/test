@@ -10,11 +10,13 @@ jobs:
       options: --privileged
     steps:
       - name: install required 
-        run: pacman -Sy --noconfirm devtools sudo
+        run: pacman -Sy --noconfirm devtools btrfs-progs dbus sudo
       - name: make user for build
         run: useradd -m user || true
       - name: build
         run: |
+          dbus-uuidgen --ensure=/etc/machine-id
+          # sed -i "s|MAKEFLAGS=.*|MAKEFLAGS=-j$(nproc)|" /etc/makepkg.conf
           git clone https://aur.archlinux.org/obs-studio-browser.git
           cd obs-studio-browser
           extra-x86_64-build -- -U user
