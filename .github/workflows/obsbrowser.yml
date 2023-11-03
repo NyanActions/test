@@ -9,8 +9,8 @@ jobs:
       image: archlinux:base-devel
       options: --privileged
     steps:
-     # - name: install required 
-     #   run: pacman -Syu --noconfirm base-devel git sudo
+      - name: install required 
+        run: pacman -Syu --noconfirm git sudo
       - name: make user for build
         run: useradd -m user || true
       - name: build
