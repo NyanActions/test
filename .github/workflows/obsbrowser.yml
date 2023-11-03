@@ -10,7 +10,7 @@ jobs:
       options: --privileged
     steps:
       - name: install required 
-        run: pacman -Sy --noconfirm git sudo
+        run: pacman -Sy --noconfirm devtools sudo
       - name: make user for build
         run: useradd -m user || true
       - name: build
