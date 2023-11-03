@@ -1,0 +1,25 @@
+name: build obs-studio-browser
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux
+      options: --privileged
+    steps:
+      - name: install required 
+        run: pacman -Syu --noconfirm base-devel git sudo
+      - name: make user for build
+        run: useradd -m user || true
+      - name: build
+        run: |
+          su - user
+          git clone https://aur.archlinux.org/obs-studio-browser.git
+          cd obs-studio-browser
+          makepkg -sc
+
+
+
+
