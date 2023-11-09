@@ -20,7 +20,7 @@ jobs:
         run: |
           cd /home/user
           sudo -u user bash -c "git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si --noconfirm"
-          sudo -u user bash -c "yay -S --noconfirm pipewire-jack obs-studio-browser"
+          sudo -u user bash -c "yay -S --noconfirm ffmpeg-obs pipewire-jack obs-studio-browser"
           # sudo -u user git clone https://aur.archlinux.org/obs-studio-browser.git && cd obs-studio-browser && makepkg -sc --noconfirm
 
 
