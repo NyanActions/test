@@ -64,6 +64,13 @@ jobs:
         run: |
           cd ${{ github.workspace }}/main
           make package IPA=Twitch.ipa FINALPACKAGE=1
+          echo "location=$(ls -t packages | head -n1)" >>$GITHUB_OUTPUT
+          echo -e "sha256: $(shasum -a 256 packages/*.ipa | cut -f1 -d' ')"
         env:
           THEOS: ${{ github.workspace }}/theos
-          
+      - name: upload package to artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: TwitchAdBlock
+          path: ${{ github.workspace }}/main/packages/${{ steps.package.outputs.location }}
+          if-no-files-found: error
