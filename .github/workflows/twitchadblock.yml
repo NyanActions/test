@@ -64,4 +64,6 @@ jobs:
         run: |
           cd ${{ github.workspace }}/main
           make package IPA=Twitch.ipa FINALPACKAGE=1
+        env:
+          THEOS: ${{ github.workspace }}/theos
           
