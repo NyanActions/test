@@ -32,6 +32,7 @@ jobs:
           path: theos
           submodules: recursive
       - name: SDK cache
+        id: sdk
         uses: actions/cache@v3
         env:
           cache-name: iPhoneOS${{ env.SDK_VERSION }}
@@ -40,7 +41,7 @@ jobs:
           key: ${{ env.cache-name }}
           restore-keys: ${{ env.cache-name }}
       - name: download ios sdk
-        if: steps.SDK.outputs.cache-hit != 'true'
+        if: steps.sdk.outputs.cache-hit != 'true'
         run: |
           svn checkout -q https://github.com/arichorn/sdks/trunk/iPhoneOS${{ env.SDK_VERSION }}.sdk
           mv *.sdk $THEOS/sdks
