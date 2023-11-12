@@ -64,10 +64,10 @@ jobs:
         id: package
         run: |
           cd ${{ github.workspace }}/main
-          make package IPA=Twitch.ipa FINALPACKAGE=1
-          rename "s/.deb/.ipa/" ./packages/*.deb
+          make package THEOS_PACKAGE_SCHEME=rootless FINALPACKAGE=1
+          # rename "s/.deb/.ipa/" ./packages/*.deb
           echo "location=$(ls -t packages | head -n1)" >>$GITHUB_OUTPUT
-          echo -e "sha256: $(shasum -a 256 packages/*.ipa | cut -f1 -d' ')"
+          # echo -e "sha256: $(shasum -a 256 packages/*.ipa | cut -f1 -d' ')"
         env:
           THEOS: ${{ github.workspace }}/theos
       - name: upload package to artifact
@@ -76,3 +76,4 @@ jobs:
           name: TwitchAdBlock
           path: ${{ github.workspace }}/main/packages/${{ steps.package.outputs.location }}
           if-no-files-found: error
+
