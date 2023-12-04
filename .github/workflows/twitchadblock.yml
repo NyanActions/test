@@ -64,7 +64,9 @@ jobs:
         id: package
         run: |
           cd ${{ github.workspace }}/main
-          make package THEOS_PACKAGE_SCHEME=rootless FINALPACKAGE=1
+          sed -i '' "27s#.*#BUNDLE_ID = tv.twitch#g" Makefile
+          sed -i '' "26s#.*#DISPLAY_NAME = Twitch#g" Makefile
+          make package IPA=Twitch.ipa FINALPACKAGE=1
           # rename "s/.deb/.ipa/" ./packages/*.deb
           echo "location=$(ls -t packages | head -n1)" >>$GITHUB_OUTPUT
           # echo -e "sha256: $(shasum -a 256 packages/*.ipa | cut -f1 -d' ')"
