@@ -17,7 +17,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
         with: 
-          repository: level3tjg/TwitchAdBlock
+          repository: itsnebulalol/ding
           path: main
           submodules: recursive
       - name: checkout theos
