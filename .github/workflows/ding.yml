@@ -1,0 +1,64 @@
+# https://github.com/arichorn/uYouPlusExtra/blob/main/.github/workflows/buildapp.yml
+
+name: Build Ding
+on:
+  workflow_dispatch:
+env:
+  SDK_VERSION: 15.5
+  
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: install dependencies
+        run: brew install bzip2 curl dpkg jq ldid make node svn wget xz rename
+      - name: set PATH environment variable
+        run: echo "$(brew --prefix make)/libexec/gnubin" >> $GITHUB_PATH
+      - name: checkout
+        uses: actions/checkout@v4
+        with: 
+          repository: level3tjg/TwitchAdBlock
+          path: main
+          submodules: recursive
+      - name: checkout theos
+        uses: actions/checkout@v4
+        with: 
+          repository: theos/theos
+          path: theos
+          submodules: recursive
+      - name: SDK cache
+        id: sdk
+        uses: actions/cache@v3
+        env:
+          cache-name: iPhoneOS${{ env.SDK_VERSION }}
+        with:
+          path: theos/sdks/
+          key: ${{ env.cache-name }}
+          restore-keys: ${{ env.cache-name }}
+      - name: download ios sdk
+        if: steps.sdk.outputs.cache-hit != 'true'
+        run: |
+          svn checkout -q https://github.com/arichorn/sdks/trunk/iPhoneOS${{ env.SDK_VERSION }}.sdk
+          mv *.sdk $THEOS/sdks
+        env:
+          THEOS: ${{ github.workspace }}/theos
+      - name: build package
+        id: package
+        run: |
+          cd ${{ github.workspace }}/main
+          make package
+          echo "location=$(ls -t packages | head -n1)" >>$GITHUB_OUTPUT
+          echo -e "sha256: $(shasum -a 256 packages/*.deb | cut -f1 -d' ')"
+        env:
+          THEOS: ${{ github.workspace }}/theos
+      - name: upload package to artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Ding
+          path: ${{ github.workspace }}/main/packages/${{ steps.package.outputs.location }}
+          if-no-files-found: error
+
+
+
+
+
