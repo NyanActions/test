@@ -46,7 +46,7 @@ jobs:
         id: package
         run: |
           cd ${{ github.workspace }}/main
-          make package ROOTFUL=0 FINALPACKAGE=1
+          make clean package ROOTFUL=0 FINALPACKAGE=1
           echo "location=$(ls -t packages | head -n1)" >>$GITHUB_OUTPUT
           echo -e "sha256: $(shasum -a 256 packages/*.deb | cut -f1 -d' ')"
         env:
