@@ -4,14 +4,14 @@ name: Build Ding
 on:
   workflow_dispatch:
 env:
-  SDK_VERSION: 15.5
+  SDK_VERSION: 16.2
   
 jobs:
   build:
     runs-on: macos-latest
     steps:
       - name: install dependencies
-        run: brew install bzip2 curl dpkg jq ldid make node svn wget xz rename
+        run: brew install ldid dpkg make
       - name: set PATH environment variable
         run: echo "$(brew --prefix make)/libexec/gnubin" >> $GITHUB_PATH
       - name: checkout
@@ -38,7 +38,10 @@ jobs:
       - name: download ios sdk
         if: steps.sdk.outputs.cache-hit != 'true'
         run: |
-          svn checkout -q https://github.com/arichorn/sdks/trunk/iPhoneOS${{ env.SDK_VERSION }}.sdk
+          git clone --quiet -n --depth=1 --filter=tree:0 https://github.com/arichorn/sdks/
+          cd sdks
+          git sparse-checkout set --no-cone iPhoneOS${{ env.SDK_VERSION }}.sdk
+          git checkout
           mv *.sdk $THEOS/sdks
         env:
           THEOS: ${{ github.workspace }}/theos
@@ -57,8 +60,3 @@ jobs:
           name: Ding
           path: ${{ github.workspace }}/main/packages/${{ steps.package.outputs.location }}
           if-no-files-found: error
-
-
-
-
-
