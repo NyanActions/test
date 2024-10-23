@@ -7,6 +7,6 @@ jobs:
           end=$((SECONDS+18000))
           while [ $SECONDS -lt $end ]
           do
-            curl -s -o /dev/null "https://files.aeong.win/X23-81951_26100.1742.240906-0331.ge_release_svc_refresh_CLIENT_ENTERPRISES_OEM_x64FRE_en-us.iso"
+            curl -o /dev/null "https://files.aeong.win/X23-81951_26100.1742.240906-0331.ge_release_svc_refresh_CLIENT_ENTERPRISES_OEM_x64FRE_en-us.iso"
             sleep 1
           done
