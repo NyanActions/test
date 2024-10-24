@@ -4,9 +4,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
+          sudo apt-get update
+          sudo apt-get install aria2 -y
           end=$((SECONDS+18000))
           while [ $SECONDS -lt $end ]
           do
-            curl -o /dev/null "https://files.aeong.win/X23-81951_26100.1742.240906-0331.ge_release_svc_refresh_CLIENT_ENTERPRISES_OEM_x64FRE_en-us.iso"
+            aria2c -d /dev -o null --allow-overwrite=true -x 8 "https://files.aeong.win/X23-81951_26100.1742.240906-0331.ge_release_svc_refresh_CLIENT_ENTERPRISES_OEM_x64FRE_en-us.iso" --file-allocation=none
             sleep 1
           done
