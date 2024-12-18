@@ -8,6 +8,8 @@ jobs:
     continue-on-error: true
 
     steps:
+    - name: Install winget
+      uses: Cyberboss/install-winget@v1
     - name: Download Cloudflared
       run: Invoke-WebRequest https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.exe -OutFile cloudflared.exe
 
@@ -16,11 +18,14 @@ jobs:
     - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
     - run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
     - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "${{ secrets.PASSWORD }}" -Force)
+
+    - name: Install wingetcreate
+      run: winget.exe install --id "qBittorrent.qBittorrent" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force
       
     - name: Create Tunnel
       run: Start-Process -FilePath ".\cloudflared.exe" -ArgumentList "--url rdp://localhost:3389 --logfile C:\cloudflared.log"
       
-    - run: Start-Sleep -s 10
+    - run: Start-Sleep -s 5
     
     - run: Get-Content C:\cloudflared.log
     
