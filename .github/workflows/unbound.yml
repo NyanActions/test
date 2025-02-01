@@ -36,5 +36,17 @@ jobs:
           wget -O discord/config.xxhdpi.apk https://tracker.vendetta.rocks/tracker/download/$VERSION/config.xxhdpi
           wget -O discord/config.en.apk https://tracker.vendetta.rocks/tracker/download/$VERSION/config.en
 
-      - run: java -jar lspatch.jar
-      - run: java -jar apkeditor.jar m -i discord/
+      - name: Download Unbound
+        run: wget -O unbound-loader.apk https://files.catbox.moe/gik9k0.apk
+
+      - name: Antisplit Discord APK
+        run: java -jar apkeditor.jar m -i discord/ -o discord.apk
+      
+      - name: Patch APK
+        run: java -jar lspatch.jar unbound-loader.apk discord.apk
+
+      - name: Upload release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: unbound
+          path: hello
