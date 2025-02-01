@@ -1,0 +1,33 @@
+name: Build Unbound
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Java SDK
+        uses: actions/setup-java@v4
+
+      - name: Download LSPatch
+        run: gh release download --repo JingMatrix/LSPatch --pattern lspatch.jar
+
+      - name: Download APKEditor
+        run: gh release download --output apkeditor.jar --repo JingMatrix/LSPatch --pattern APKEditor-*.jar
+
+      - name: Download Discord
+        run: |
+          mkdir discord
+          VERSION=$(curl -s https://tracker.vendetta.rocks/tracker/index | jq -r '.latest.stable')
+          wget -O discord/base.apk https://tracker.vendetta.rocks/tracker/download/$VERSION/base
+          wget -O discord/config.arm64_v8a.apk https://tracker.vendetta.rocks/tracker/download/$VERSION/config.arm64_v8a
+          wget -O discord/config.armeabi_v7a.apk https://tracker.vendetta.rocks/tracker/download/$VERSION/config.armeabi_v7a
+          wget -O discord/config.x86_64.apk https://tracker.vendetta.rocks/tracker/download/$VERSION/config.x86_64
+          wget -O discord/config.x86.apk https://tracker.vendetta.rocks/tracker/download/$VERSION/config.x86
+          wget -O discord/config.hdpi.apk https://tracker.vendetta.rocks/tracker/download/$VERSION/config.hdpi
+          wget -O discord/config.xxhdpi.apk https://tracker.vendetta.rocks/tracker/download/$VERSION/config.xxhdpi
+          wget -O discord/config.en.apk https://tracker.vendetta.rocks/tracker/download/$VERSION/config.en
+
+      
