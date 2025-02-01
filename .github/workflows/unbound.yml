@@ -27,26 +27,26 @@ jobs:
         run: |
           mkdir discord
           VERSION=$(curl -s https://tracker.vendetta.rocks/tracker/index | jq -r '.latest.stable')
-          wget -O discord/base.apk https://tracker.vendetta.rocks/tracker/download/$VERSION/base
-          wget -O discord/config.arm64_v8a.apk https://tracker.vendetta.rocks/tracker/download/$VERSION/config.arm64_v8a
-          wget -O discord/config.armeabi_v7a.apk https://tracker.vendetta.rocks/tracker/download/$VERSION/config.armeabi_v7a
-          wget -O discord/config.x86_64.apk https://tracker.vendetta.rocks/tracker/download/$VERSION/config.x86_64
-          wget -O discord/config.x86.apk https://tracker.vendetta.rocks/tracker/download/$VERSION/config.x86
-          wget -O discord/config.hdpi.apk https://tracker.vendetta.rocks/tracker/download/$VERSION/config.hdpi
-          wget -O discord/config.xxhdpi.apk https://tracker.vendetta.rocks/tracker/download/$VERSION/config.xxhdpi
-          wget -O discord/config.en.apk https://tracker.vendetta.rocks/tracker/download/$VERSION/config.en
+          wget -O discord/base.apk -q https://tracker.vendetta.rocks/tracker/download/$VERSION/base
+          wget -O discord/config.arm64_v8a.apk -q https://tracker.vendetta.rocks/tracker/download/$VERSION/config.arm64_v8a
+          wget -O discord/config.armeabi_v7a.apk -q https://tracker.vendetta.rocks/tracker/download/$VERSION/config.armeabi_v7a
+          wget -O discord/config.x86_64.apk -q https://tracker.vendetta.rocks/tracker/download/$VERSION/config.x86_64
+          wget -O discord/config.x86.apk -q https://tracker.vendetta.rocks/tracker/download/$VERSION/config.x86
+          wget -O discord/config.hdpi.apk -q https://tracker.vendetta.rocks/tracker/download/$VERSION/config.hdpi
+          wget -O discord/config.xxhdpi.apk -q https://tracker.vendetta.rocks/tracker/download/$VERSION/config.xxhdpi
+          wget -O discord/config.en.apk -q https://tracker.vendetta.rocks/tracker/download/$VERSION/config.en
 
       - name: Download Unbound
-        run: wget -O unbound-loader.apk https://files.catbox.moe/gik9k0.apk
+        run: wget -O unbound-loader.apk -q https://files.catbox.moe/gik9k0.apk
 
       - name: Antisplit Discord APK
         run: java -jar apkeditor.jar m -i discord/ -o discord.apk
       
       - name: Patch APK
-        run: java -jar lspatch.jar unbound-loader.apk discord.apk
+        run: java -jar lspatch.jar discord.apk -m unbound-loader.apk
 
       - name: Upload release APK
         uses: actions/upload-artifact@v4
         with:
           name: unbound
-          path: hello
+          path: ./*-lspatched.apk
