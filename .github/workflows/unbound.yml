@@ -10,6 +10,9 @@ jobs:
     steps:
       - name: Setup Java SDK
         uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
 
       - name: Download LSPatch
         run: gh release download --repo JingMatrix/LSPatch --pattern lspatch.jar
