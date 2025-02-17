@@ -37,7 +37,7 @@ jobs:
           wget -O discord/config.en.apk -q https://tracker.vendetta.rocks/tracker/download/$VERSION/config.en
 
       - name: Download Unbound
-        run: wget -O unbound-loader.apk -q https://files.catbox.moe/gik9k0.apk
+        run: wget -O unbound-loader.apk -q https://files.catbox.moe/wj79g4.apk
 
       - name: Antisplit Discord APK
         run: java -jar apkeditor.jar m -i discord/ -o discord.apk
