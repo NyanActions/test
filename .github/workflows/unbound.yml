@@ -4,9 +4,6 @@ on:
     - cron: "0 * * * *"
   workflow_dispatch:
 
-env:
-  GH_TOKEN: ${{ github.token }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,9 +16,8 @@ jobs:
 
       - name: Download LSPatch
         run: gh release download --repo JingMatrix/LSPatch --pattern lspatch.jar
-
-      - name: Download APKEditor
-        run: gh release download --output apkeditor.jar --repo REAndroid/APKEditor --pattern APKEditor-*.jar
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Download Discord
         run: |
@@ -37,16 +33,22 @@ jobs:
           wget -O discord/config.en.apk -q https://tracker.vendetta.rocks/tracker/download/$VERSION/config.en
 
       - name: Download Unbound
-        run: wget -O unbound-loader.apk -q https://files.catbox.moe/wj79g4.apk
+        uses: dawidd6/action-download-artifact@v8
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: build.yml
+          branch: main
+          name: app-release
+          repo: unbound-app/loader-android
+          if_no_artifact_found: fail
 
-      - name: Antisplit Discord APK
-        run: java -jar apkeditor.jar m -i discord/ -o discord.apk
-      
       - name: Patch APK
-        run: java -jar lspatch.jar discord.apk -m unbound-loader.apk
+        run: |
+          mv app-release.apk unbound-loader.apk
+          java -jar lspatch.jar -m unbound-loader.apk -l 2 -o lspatched/ discord/*.apk
 
       - name: Upload release APK
         uses: actions/upload-artifact@v4
         with:
           name: unbound
-          path: ./*-lspatched.apk
+          path: ./lspatched/*
