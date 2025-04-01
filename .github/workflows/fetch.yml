@@ -8,6 +8,5 @@ jobs:
     steps:
       - run: |
           git clone --bare https://gitlab.com/open-ptv/purpletv.git .
-          git remote remove origin
-          git remote add origin https://github.com/nyanarchive/purpletv.git
-          git push --mirror https://aeongdesu:${{ secrets.GH_TOKEN }}@github.com/nyanarchive/purpletv.git
+          git remote set-url --push origin https://aeongdesu:${{ secrets.GH_TOKEN }}@github.com/nyanarchive/purpletv.git
+          git push --mirror 
