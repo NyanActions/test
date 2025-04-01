@@ -8,4 +8,4 @@ jobs:
     steps:
       - run: |
           git clone --bare https://gitlab.com/open-ptv/purpletv.git .
-          git push --mirror https://aeongdesu@${{ secret.GH_TOKEN }}github.com/nyanarchive/purpletv.git
+          git push --mirror https://aeongdesu@${{ secrets.GH_TOKEN }}github.com/nyanarchive/purpletv.git
