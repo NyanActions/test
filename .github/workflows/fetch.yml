@@ -7,5 +7,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          git clone --bare https://gitlab.com/open-ptv/purpletv .
-          GITHUB_TOKEN=$GH_TOKEN git push --mirror https://github.com/nyanarchive/purpletv.git
+          git clone --bare https://gitlab.com/open-ptv/purpletv.git .
+          git push --mirror https://aeongdesu@${{ secret.GH_TOKEN }}github.com/nyanarchive/purpletv.git
