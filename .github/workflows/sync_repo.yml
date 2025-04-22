@@ -63,5 +63,5 @@ jobs:
           /repos/${{ env.OWNER }}/${{ env.REPO }}/merge-upstream \
           -f "branch=main"
         env:
-          OWNER: aeongneko
+          OWNER: nyanactions
           REPO: ytlite
