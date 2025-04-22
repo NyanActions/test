@@ -4,7 +4,7 @@ name: Build Ding
 on:
   workflow_dispatch:
 env:
-  SDK_VERSION: 16.2
+  SDK_VERSION: 16.5
   
 jobs:
   build:
@@ -12,29 +12,34 @@ jobs:
     steps:
       - name: install dependencies
         run: brew install ldid dpkg make
+        
       - name: set PATH environment variable
         run: echo "$(brew --prefix make)/libexec/gnubin" >> $GITHUB_PATH
+        
       - name: checkout
         uses: actions/checkout@v4
         with: 
           repository: itsnebulalol/ding
           path: main
           submodules: recursive
+          
       - name: checkout theos
         uses: actions/checkout@v4
         with: 
           repository: theos/theos
           path: theos
           submodules: recursive
+          
       - name: SDK cache
         id: sdk
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: iPhoneOS${{ env.SDK_VERSION }}
         with:
           path: theos/sdks/
           key: ${{ env.cache-name }}
           restore-keys: ${{ env.cache-name }}
+          
       - name: download ios sdk
         if: steps.sdk.outputs.cache-hit != 'true'
         run: |
@@ -45,17 +50,19 @@ jobs:
           mv *.sdk $THEOS/sdks
         env:
           THEOS: ${{ github.workspace }}/theos
+          
       - name: build package
         id: package
         run: |
           cd ${{ github.workspace }}/main
-          make clean package ROOTFUL=0 FINALPACKAGE=1
+          make clean package DEBUG=0 ROOTFUL=0 FINALPACKAGE=1
           echo "location=$(ls -t packages | head -n1)" >>$GITHUB_OUTPUT
           echo -e "sha256: $(shasum -a 256 packages/*.deb | cut -f1 -d' ')"
         env:
           THEOS: ${{ github.workspace }}/theos
+          
       - name: upload package to artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Ding
           path: ${{ github.workspace }}/main/packages/${{ steps.package.outputs.location }}
