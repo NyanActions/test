@@ -1,0 +1,64 @@
+name: sync repo
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"
+  
+jobs:
+  workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: sync purpletv
+        run: |
+          git clone --bare https://gitlab.com/open-ptv/purpletv.git .
+          git remote set-url --push origin https://aeongdesu:${{ secrets.GH_TOKEN }}@github.com/nyanarchive/purpletv.git
+          git push --mirror
+
+      - name: sync osu-preview
+        run: |
+          gh api \
+          --method POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          /repos/${{ env.OWNER }}/${{ env.REPO }}/merge-upstream \
+          -f "branch=main"
+        env:
+          OWNER: aeongneko
+          REPO: osu-preview
+
+
+      - name: sync twitchadblock
+        run: |
+          gh api \
+          --method POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          /repos/${{ env.OWNER }}/${{ env.REPO }}/merge-upstream \
+          -f "branch=main"
+        env:
+          OWNER: nyanactions
+          REPO: twitchadblock
+          
+      - name: sync simple-mod-framework
+        run: |
+          gh api \
+          --method POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          /repos/${{ env.OWNER }}/${{ env.REPO }}/merge-upstream \
+          -f "branch=main"
+        env:
+          OWNER: nyanactions
+          REPO: simple-mod-framework
+
+      - name: sync ytlite
+        run: |
+          gh api \
+          --method POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          /repos/${{ env.OWNER }}/${{ env.REPO }}/merge-upstream \
+          -f "branch=main"
+        env:
+          OWNER: aeongneko
+          REPO: ytlite
