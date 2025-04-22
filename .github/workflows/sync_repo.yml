@@ -3,6 +3,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "*/5 * * * *"
+
+env:
+  GH_TOKEN: ${{ env.GH_TOKEN }}
   
 jobs:
   workflow:
