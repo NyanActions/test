@@ -4,7 +4,7 @@ name: Build Ding
 on:
   workflow_dispatch:
 env:
-  SDK_VERSION: 16.4
+  SDK_VERSION: 15.5
   
 jobs:
   build:
