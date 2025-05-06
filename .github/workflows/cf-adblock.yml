@@ -3,9 +3,6 @@ name: Update Filter Lists
 on:
   schedule:
     - cron: "0 0 * * *"
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 concurrency:
@@ -34,7 +31,6 @@ jobs:
         run: npm ci
 
       - name: Download allowlists
-        if: vars.ALLOWLIST_URLS != ''
         run: npm run download:allowlist
         env:
           ALLOWLIST_URLS: ${{ vars.ALLOWLIST_URLS }}
