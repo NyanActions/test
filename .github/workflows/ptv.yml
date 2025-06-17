@@ -10,6 +10,7 @@ jobs:
     runs-on: windows-latest
     env:
       working-directory: ./toolchain
+      PYTHONIOENCODING: utf-8
 
     steps:
       - name: Hide sensitive inputs
