@@ -46,14 +46,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-      - name: Download dex2jar
-        run: |
-          gh release download --repo ThexXTURBOXx/dex2jar --pattern dex-tools-*.zip --output dex-tools.zip
-          tar -xf dex-tools.zip
-          rm dex-tools.zip
-          mv dex-tools-*/ dex-tools
-        env:
-          GH_TOKEN: ${{ github.token }}
+      # - name: Download dex2jar
+      #  run: |
+      #    gh release download --repo ThexXTURBOXx/dex2jar --pattern dex-tools-*.zip --output dex-tools.zip
+      #    tar -xf dex-tools.zip
+      #    rm dex-tools.zip
+      #    mv dex-tools-*/ dex-tools
+      #  env:
+      #    GH_TOKEN: ${{ github.token }}
 
           
       - name: apkm -> apk
@@ -68,11 +68,17 @@ jobs:
           uv pip install pyaxmlparser
         working-directory: ${{ env.working-directory }}
 
+      # - name: dex2jar
+      #  run: |
+      #    cd dex-tools
+      #    .\d2j-dex2jar ../toolchain/apk/ttv.apk -o ../Twitch/libs/tv.twitch.android.app.jar -f
+
       - name: dex2jar
         run: |
-          cd dex-tools
-          .\d2j-dex2jar ../toolchain/apk/ttv.apk -o ../Twitch/libs/tv.twitch.android.app.jar -f
-     
+          .venv\Scripts\activate
+          python app.py --jar
+        working-directory: ${{ env.working-directory }}
+      
       - name: Decompile
         run: |
           .venv\Scripts\activate
