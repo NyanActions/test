@@ -18,7 +18,7 @@ jobs:
     
       - name: Checkout repo
         run: |
-          git clone ([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String("aHR0cHM6Ly9naXRsYWIuY29tL29wZW4tcHR2L3B1cnBsZXR2"))) . -b FIXIES
+          git clone ([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String("aHR0cHM6Ly9naXRsYWIuY29tL29wZW4tcHR2L3B1cnBsZXR2LmdpdC8="))) . -b FIXIES
           git config --system core.longpaths true
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
