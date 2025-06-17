@@ -22,9 +22,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.13
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        run: uv python install
 
       - name: Prepare Java JDK
         uses: actions/setup-java@v4
@@ -60,31 +62,31 @@ jobs:
 
       - name: Setup virtualenv
         run: |
-          python -m venv venv
-          venv/Scripts/activate
-          pip install pyaxmlparser
+          uv venv
+          .venv\Scripts\activate
+          uv pip install pyaxmlparser
         working-directory: ${{ env.working-directory }}
 
       - name: dex2jar
         run: |
           cd dex-tools
-          .\d2j-dex2jar toolchain/apk/ttv.apk -o ../Twitch/libs/tv.twitch.android.app.jar -f
+          .\d2j-dex2jar ../toolchain/apk/ttv.apk -o ../Twitch/libs/tv.twitch.android.app.jar -f
      
       - name: Decompile
         run: |
-          venv/Scripts/activate
+          .venv\Scripts\activate
           python app.py --decompile
         working-directory: ${{ env.working-directory }}
 
       - name: Apply
         run: |
-          venv/Scripts/activate
+          .venv\Scripts\activate
           python app.py --apply
         working-directory: ${{ env.working-directory }}
 
       - name: Recompile
         run: |
-          venv/Scripts/activate
+          .venv\Scripts\activate
           python app.py --recompile
         working-directory: ${{ env.working-directory }}
         continue-on-error: true # because of signing
