@@ -6,6 +6,7 @@ on:
         required: true
       branches:
         default: main
+        required: true
 
 jobs:
   build:
@@ -29,12 +30,9 @@ jobs:
           $content = [System.IO.File]::ReadAllText("${{ env.working-directory }}/app.py").Replace("tasks.append(apktool.UberSignApk(ctx))","")
           [System.IO.File]::WriteAllText("${{ env.working-directory }}/app.py", $content)
 
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-
-      - name: Set up Python
-        run: uv python install
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
 
       - name: Prepare Java JDK
         uses: actions/setup-java@v4
@@ -70,9 +68,9 @@ jobs:
 
       - name: Setup virtualenv
         run: |
-          uv venv
+          python -m venv .venv
           .venv\Scripts\activate
-          uv pip install pyaxmlparser
+          pip install pyaxmlparser
         working-directory: ${{ env.working-directory }}
 
       # - name: dex2jar
@@ -90,7 +88,7 @@ jobs:
         run: |
           .venv\Scripts\activate
           # prevent(?) 'LF will be replaced by CRLF the next time Git touches it' spam
-          git config --global core.autocrlf true
+          git config --global core.autocrlf false
           python app.py --decompile
         working-directory: ${{ env.working-directory }}
 
@@ -105,7 +103,7 @@ jobs:
           .venv\Scripts\activate
           python app.py --recompile
         working-directory: ${{ env.working-directory }}
-        continue-on-error: true # because of signing
+        # continue-on-error: true # because of signing
 
       - name: Signing
         run: |
