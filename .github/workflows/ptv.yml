@@ -36,7 +36,7 @@ jobs:
       #   uses: android-actions/setup-android@v3
 
       - name: Prepare TTV apkm
-        run: Invoke-WebRequest ${{ github.event.inputs.apkm }} -OutFile ttv.apkm
+        run: Invoke-WebRequest "${{ github.event.inputs.apkm }}" -OutFile ttv.apkm
 
       - name: Download APKEditor
         run: gh release download --repo REAndroid/APKEditor --pattern APKEditor-*.jar --output apkeditor.jar
