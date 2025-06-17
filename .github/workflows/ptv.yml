@@ -4,12 +4,14 @@ on:
     inputs:
       apkm:
         required: true
+      branches:
+        default: main
 
 jobs:
   build:
     runs-on: windows-latest
     env:
-      working-directory: ./toolchain
+      working-directory: ${{ github.workspace }}/toolchain
       PYTHONIOENCODING: utf-8
 
     steps:
@@ -18,10 +20,15 @@ jobs:
     
       - name: Checkout repo
         run: |
-          git clone ([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String("aHR0cHM6Ly9naXRsYWIuY29tL29wZW4tcHR2L3B1cnBsZXR2LmdpdC8="))) . -b FIXIES
+          git clone ([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String("aHR0cHM6Ly9naXRsYWIuY29tL29wZW4tcHR2L3B1cnBsZXR2LmdpdC8="))) . -b ${{ github.event.inputs.branches }}
           git config --system core.longpaths true
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # hacky fix for signing
+          $content = [System.IO.File]::ReadAllText("${{ env.working-directory }}/app.py").Replace("tasks.append(apktool.UberSignApk(ctx))","")
+          [System.IO.File]::WriteAllText("${{ env.working-directory }}/app.py", $content)
+
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
