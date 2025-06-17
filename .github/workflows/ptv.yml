@@ -43,6 +43,16 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
+      - name: Download dex2jar
+        run: |
+          gh release download --repo ThexXTURBOXx/dex2jar --pattern dex-tools-*.zip --output dex-tools.zip
+          tar -xf dex-tools.zip
+          rm dex-tools.zip
+          mv dex-tools-*/ dex-tools
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+          
       - name: apkm -> apk
         run: |
           mkdir toolchain/apk
@@ -57,9 +67,8 @@ jobs:
 
       - name: dex2jar
         run: |
-          venv/Scripts/activate
-          python app.py --jar
-        working-directory: ${{ env.working-directory }}
+          cd dex-tools
+          .\d2j-dex2jar toolchain/apk/ttv.apk -o ../Twitch/libs/tv.twitch.android.app.jar -f
      
       - name: Decompile
         run: |
