@@ -1,0 +1,91 @@
+name: ptv build test
+on: 
+  workflow_dispatch:
+    inputs:
+      apkm:
+        required: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      working-directory: ./toolchain
+
+    steps:
+      - name: Checkout repo
+        run: |
+          git clone ([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String("aHR0cHM6Ly9naXRsYWIuY29tL29wZW4tcHR2L3B1cnBsZXR2"))) . -b FIXIES
+          git config --system core.longpaths true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+          cache: pip
+
+      - name: Prepare Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      # - name: Setup Android SDK
+      #   uses: android-actions/setup-android@v3
+
+      - name: Prepare TTV apkm
+        run: Invoke-WebRequest ${{ github.event.inputs.apkm }} -OutFile ttv.apkm
+
+      - name: Download APKEditor
+        run: gh release download --repo REAndroid/APKEditor --pattern APKEditor-*.jar --output apkeditor.jar
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: apkm -> apk
+        run: |
+          mkdir toolchain/apk
+          java -jar apkeditor.jar m -i ./ttv.apkm -o ttv.apk
+
+      - name: Setup virtualenv
+        run: |
+          python -m venv venv
+          venv/Scripts/activate
+          pip install pyaxmlparser
+        working-directory: ${{ env.working-directory }}
+
+      - name: dex2jar
+        run: |
+          venv/Scripts/activate
+          python app.py --jar
+        working-directory: ${{ env.working-directory }}
+     
+      - name: Decompile
+        run: |
+          venv/Scripts/activate
+          python app.py --decompile
+        working-directory: ${{ env.working-directory }}
+
+      - name: Apply
+        run: |
+          venv/Scripts/activate
+          python app.py --apply
+        working-directory: ${{ env.working-directory }}
+
+      - name: Recompile
+        run: |
+          venv/Scripts/activate
+          python app.py --recompile
+        working-directory: ${{ env.working-directory }}
+        continue-on-error: true # because of signing
+
+      - name: Signing
+        run: |
+          mkdir ${{ github.workspace }}/final
+          java -jar bin/uber-apk-signer-1.3.0.jar --apks out/ --out ${{ github.workspace }}/final/
+        working-directory: ${{ env.working-directory }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ptv
+          path: ${{ github.workspace }}/final/*-debugSigned.apk
