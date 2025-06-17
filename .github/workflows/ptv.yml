@@ -76,6 +76,7 @@ jobs:
       - name: Decompile
         run: |
           .venv\Scripts\activate
+          git config core.autocrlf true # prevent(?) 'LF will be replaced by CRLF the next time Git touches it' spam
           python app.py --decompile
         working-directory: ${{ env.working-directory }}
 
