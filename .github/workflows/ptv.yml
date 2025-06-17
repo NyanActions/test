@@ -46,7 +46,7 @@ jobs:
       - name: apkm -> apk
         run: |
           mkdir toolchain/apk
-          java -jar apkeditor.jar m -i ./ttv.apkm -o ttv.apk
+          java -jar apkeditor.jar m -i ./ttv.apkm -o toolchain/apk/ttv.apk
 
       - name: Setup virtualenv
         run: |
