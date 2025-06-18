@@ -89,7 +89,7 @@ jobs:
           .venv\Scripts\activate
           # prevent(?) 'LF will be replaced by CRLF the next time Git touches it' spam
           git config --global core.autocrlf false
-          python app.py --decompile
+          python app.py --decompile --package_name win.aeong.ptv
         working-directory: ${{ env.working-directory }}
 
       - name: Apply
