@@ -8,8 +8,8 @@ jobs:
     continue-on-error: true
 
     steps:
-    - name: Install winget
-      run: winget upgrade winget --accept-package-agreements --accept-source-agreements --disable-interactivity
+    # - name: Install winget
+    #   run: winget upgrade winget --accept-package-agreements --accept-source-agreements --disable-interactivity
 
     - name: Enable TS
       run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
