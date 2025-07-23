@@ -19,8 +19,8 @@ jobs:
     
     - name: Install packages
       run: |
-          winget install --id=Cloudflare.cloudflared -e -h
-          winget install --id=c0re100.qBittorrent-Enhanced-Edition -e -h
+          winget install --id=Cloudflare.cloudflared -e --accept-source-agreements --disable-interactivity --silent --accept-package-agreement
+          winget install --id=c0re100.qBittorrent-Enhanced-Edition -e --accept-source-agreements --disable-interactivity --silent --accept-package-agreement
           
     - name: Create Tunnel
       run: cloudflared --url rdp://localhost:3389 --logfile C:\cloudflared.log
