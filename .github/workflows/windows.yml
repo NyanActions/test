@@ -28,4 +28,6 @@ jobs:
       with:
         url: rdp://localhost:3389
 
-    - run: Start-Sleep -s 21600
+    - name: Shutdown and view logs of cloudflared
+      if: '! cancelled()'
+      uses: AnimMouse/setup-cloudflared/shutdown@v2
