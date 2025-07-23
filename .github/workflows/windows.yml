@@ -11,23 +11,22 @@ jobs:
     # - name: Install winget
     #   run: winget upgrade winget --accept-package-agreements --accept-source-agreements --disable-interactivity
 
-    - name: Setup cloudflared
-      uses: AnimMouse/setup-cloudflared@v2
+    - name: Download Cloudflared
+      run: Invoke-WebRequest https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.exe -OutFile cloudflared.exe
 
     - name: Enable TS
       run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
     - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
     - run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
     - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "${{ secrets.PASSWORD }}" -Force)
+
+    - name: Create Tunnel
+      run: Start-Process -FilePath ".\cloudflared.exe" -ArgumentList "--url rdp://localhost:3389 --logfile C:\cloudflared.log"
     
     - name: Install packages
       run: winget install -e --silent --accept-source-agreements --accept-package-agreements --id c0re100.qBittorrent-Enhanced-Edition
-      
-    - name: Setup cloudflared tunnel
-      uses: AnimMouse/setup-cloudflared/tunnel@v2
-      with:
-        url: rdp://localhost:3389
 
-    - name: Shutdown and view logs of cloudflared
-      if: '! cancelled()'
-      uses: AnimMouse/setup-cloudflared/shutdown@v2
+    - name: show result link
+      run: findstr "trycloudflare.com" C:\cloudflared.log
+
+    - run: Start-Sleep -s 21600
