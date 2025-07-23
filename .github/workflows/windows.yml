@@ -11,6 +11,9 @@ jobs:
     # - name: Install winget
     #   run: winget upgrade winget --accept-package-agreements --accept-source-agreements --disable-interactivity
 
+    - name: Setup cloudflared
+      uses: AnimMouse/setup-cloudflared@v2
+
     - name: Enable TS
       run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
     - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
@@ -18,14 +21,11 @@ jobs:
     - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "${{ secrets.PASSWORD }}" -Force)
     
     - name: Install packages
-      run: |
-          winget install -e --silent --accept-source-agreements --accept-package-agreements --id Cloudflare.cloudflared
-          winget install -e --silent --accept-source-agreements --accept-package-agreements --id c0re100.qBittorrent-Enhanced-Edition
-          
-    - name: Create Tunnel
-      run: cloudflared --url rdp://localhost:3389 --logfile C:\cloudflared.log
+      run: winget install -e --silent --accept-source-agreements --accept-package-agreements --id c0re100.qBittorrent-Enhanced-Edition
       
-    - name: show result link
-      run: Start-Sleep -s 5 ; findstr "trycloudflare.com" C:\cloudflared.log
+    - name: Setup cloudflared tunnel
+      uses: AnimMouse/setup-cloudflared/tunnel@v2
+      with:
+        url: rdp://localhost:3389
 
     - run: Start-Sleep -s 21600
