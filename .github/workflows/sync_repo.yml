@@ -65,3 +65,16 @@ jobs:
         env:
           OWNER: nyanactions
           REPO: ytlite
+
+          
+      - name: sync osuplus
+        run: |
+          gh api \
+          --method POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          /repos/${{ env.OWNER }}/${{ env.REPO }}/merge-upstream \
+          -f "branch=main"
+        env:
+          OWNER: aeongchan
+          REPO: osuplus
