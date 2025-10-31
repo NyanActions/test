@@ -11,11 +11,11 @@ jobs:
   workflow:
     runs-on: ubuntu-latest
     steps:
-      - name: sync purpletv
-        run: |
-          git clone --bare https://gitlab.com/open-ptv/purpletv.git .
-          git remote set-url --push origin https://aeongdesu:${{ secrets.GH_TOKEN }}@github.com/nyanarchive/purpletv.git
-          git push --mirror
+      #- name: sync purpletv
+        #run: |
+          #git clone --bare https://gitlab.com/open-ptv/purpletv.git .
+          #git remote set-url --push origin https://aeongdesu:${{ secrets.GH_TOKEN }}@github.com/nyanarchive/purpletv.git
+          #git push --mirror
 
       - name: sync osu-preview
         run: |
