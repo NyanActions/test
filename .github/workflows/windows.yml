@@ -28,7 +28,7 @@ jobs:
 
     - name: show result link
       run: |
-        $URL = Select-String -Path "C:\cloudflared.log" -Pattern "https://[a-z0-9-]+\.trycloudflare\.com"
+        $URL = (Select-String -Path "C:\cloudflared.log" -Pattern "https://[a-z0-9-]+\.trycloudflare\.com").Matches.Value
         Write-Output "::notice::cloudflared access tcp --url localhost:3398 --hostname ${URL}"
 
     - run: Start-Sleep -s 21600
