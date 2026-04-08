@@ -27,6 +27,8 @@ jobs:
       run: winget install -e --silent --accept-source-agreements --accept-package-agreements --id c0re100.qBittorrent-Enhanced-Edition
 
     - name: show result link
-      run: findstr "trycloudflare.com" C:\cloudflared.log
+      run: |
+        $URL = Select-String -Path "C:\cloudflared.log" -Pattern "https://[a-z0-9-]+\.trycloudflare\.com"
+        Write-Output "::notice::cloudflared access tcp --url localhost:3398 --hostname ${URL}"
 
     - run: Start-Sleep -s 21600
