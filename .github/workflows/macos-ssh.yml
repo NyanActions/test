@@ -1,0 +1,41 @@
+name: macos-ssh
+on: 
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  macos-ssh:
+    runs-on: macos-latest
+    continue-on-error: true
+    steps:
+    - run : |
+           mkdir -p ~/.ssh
+           chmod 700 ~/.ssh
+           cat << EOF > ~/.ssh/config
+           Host *
+               ServerAliveInterval 60
+               StrictHostKeyChecking no
+           Host github.com
+               User git
+               Port 22
+               Hostname github.com
+               TCPKeepAlive yes
+               IdentitiesOnly yes
+           EOF
+    - name: disable spotlight indexing
+      run: sudo mdutil -i off -a
+    - run: |
+          echo 'PermitRootLogin yes' | sudo tee -a /etc/ssh/sshd_config >/dev/null
+          sudo launchctl unload /System/Library/LaunchDaemons/ssh.plist
+          sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
+
+          echo -e "${{ secrets.PASSWORD }}\n${{ secrets.PASSWORD }}" | sudo passwd root
+
+    - run: |
+          brew install cloudflare/cloudflare/cloudflared
+          nohup cloudflared tunnel --url ssh://localhost:22 --logfile "/tmp/cloudflared.log" &
+    - name: get cloudflared tunnel link
+      run: sleep 10 && grep -m 1 -oE "https://(.+)trycloudflare.com" /tmp/cloudflared.log
+    - run: sleep 21600
