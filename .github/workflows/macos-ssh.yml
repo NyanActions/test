@@ -31,8 +31,7 @@ jobs:
           sudo launchctl unload /System/Library/LaunchDaemons/ssh.plist
           sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
 
-          # echo -e "${{ secrets.PASSWORD }}\n${{ secrets.PASSWORD }}" | sudo passwd root
-          echo -e "${{ secrets.PASSWORD }}\n${{ secrets.PASSWORD }}" | sudo passwd runner
+          echo -e "${{ secrets.PASSWORD }}\n${{ secrets.PASSWORD }}" | sudo passwd root
 
     - run: |
           brew install cloudflared
