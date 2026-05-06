@@ -10,9 +10,10 @@ jobs:
         uses: andriivitiv/setup-steamcmd@v1
       - name: Download VRChat
         run: |
-          steamcmd +login "${{ secrets.VRCDEPOTS_USER }}" "${{ secrets.VRCDEPOTS_PASSWORD }}" \
+          steamcmd \
             +@sSteamCmdForcePlatformType windows \
             +force_install_dir ./vrchat_build \
+            +login "${{ secrets.VRCDEPOTS_USER }}" "${{ secrets.VRCDEPOTS_PASSWORD }}" \
             +app_update 438100 validate +quit
       - name: Check files
         run: |
