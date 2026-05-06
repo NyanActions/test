@@ -1,25 +1,26 @@
+name: "VRCDepots"
 on:
   workflow_dispatch:
 
 jobs:
   main:
-    name: "VRCDepots"
     runs-on: ubuntu-latest
     steps:
       - name: Setup steamcmd
         uses: andriivitiv/setup-steamcmd@v1
       - name: Download VRChat
         run: |
+          mkdir vrchat_public
           steamcmd \
             +@sSteamCmdForcePlatformType windows \
-            +force_install_dir ./vrchat_build \
+            +force_install_dir ${{ github.action_path }}/vrchat_public \
             +login "${{ secrets.VRCDEPOTS_USER }}" "${{ secrets.VRCDEPOTS_PASSWORD }}" \
             +app_update 438100 validate +quit
       - name: Check files
         run: |
-          ls -la vrchat_build/
+          ls -la vrchat_public/
       - name: Upload files
         uses: actions/upload-artifact@v4
         with:
           name: vrchat-public
-          path: vrchat_build/
+          path: vrchat_public/
