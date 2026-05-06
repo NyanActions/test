@@ -4,7 +4,7 @@ on:
 jobs:
   main:
     name: "VRCDepots"
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     steps:
       - name: Setup steamcmd
         uses: andriivitiv/setup-steamcmd@v1
