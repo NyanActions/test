@@ -4,7 +4,7 @@ on:
 
 jobs:
   main:
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     steps:
       - name: Setup steamcmd
         uses: buildalon/setup-steamcmd@v1
