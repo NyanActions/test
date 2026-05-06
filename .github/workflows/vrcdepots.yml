@@ -10,17 +10,17 @@ jobs:
         uses: andriivitiv/setup-steamcmd@v1
       - name: Download VRChat
         run: |
-          mkdir vrchat_public
+          mkdir ${{ github.workspace }}/vrchat_public
           steamcmd \
             +@sSteamCmdForcePlatformType windows \
-            +force_install_dir ${{ github.action_path }}/vrchat_public \
+            +force_install_dir ${{ github.workspace }}/vrchat_public \
             +login "${{ secrets.VRCDEPOTS_USER }}" "${{ secrets.VRCDEPOTS_PASSWORD }}" \
             +app_update 438100 validate +quit
       - name: Check files
         run: |
-          ls -la vrchat_public/
+          ls -la ${{ github.workspace }}/vrchat_public/
       - name: Upload files
         uses: actions/upload-artifact@v4
         with:
           name: vrchat-public
-          path: vrchat_public/
+          path: ${{ github.workspace }}/vrchat_public/
