@@ -6,6 +6,9 @@ on:
         description: you know what it is
         type: string
         required: true
+      replay:
+        type: string
+        required: true
 
 jobs:
   main:
@@ -16,5 +19,9 @@ jobs:
         run: |
           # since github changed default windows shell to powershell so yeah
           iwr "${{ inputs.unstable }}" -OutFile "unstable.7z"
-          7z x unstable.7z -oOutputFolder
+          iwr "${{ inputs.replay }}" -OutFile "replay.osr"
+          iwr "https://dl.nerinyan.moe/v2/d/2440836" -OutFile "song.zip"
+          7z x unstable.7z -o"unstable"
+          7z x song.zip -o"unstable/Songs/temp"
           ls
+          ".\unstable/osu!.exe" -render "./replay.osr"
