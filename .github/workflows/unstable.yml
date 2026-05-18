@@ -1,0 +1,20 @@
+name: "unstable"
+on:
+  workflow_dispatch:
+    inputs:
+      unstable:
+        description: you know what it is
+        type: string
+        required: true
+
+jobs:
+  main:
+    runs-on: windows-latest
+    steps:
+      - uses: levibostian/action-hide-sensitive-inputs@v1
+      - name: download unstable
+        run: |
+          # since github changed default windows shell to powershell so yeah
+          iwr "${{ inputs.unstable }}" -OutFile "unstable.7z"
+          7z x unstable.7z -oOutputFolder
+          ls
