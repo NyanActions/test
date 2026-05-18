@@ -25,3 +25,7 @@ jobs:
           7z x song.zip -o"unstable/Songs/temp"
           ls
           & ".\unstable\osu!.exe" -render "./replay.osr"
+          Start-Sleep -Seconds 10
+          Wait-Process -Name "osu!"
+          ls 
+          ls unstable
