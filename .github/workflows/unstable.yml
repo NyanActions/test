@@ -24,4 +24,4 @@ jobs:
           7z x unstable.7z -o"unstable"
           7z x song.zip -o"unstable/Songs/temp"
           ls
-          ".\unstable/osu!.exe" -render "./replay.osr"
+          & ".\unstable\osu!.exe" -render "./replay.osr"
