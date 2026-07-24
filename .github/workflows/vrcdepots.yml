@@ -12,7 +12,7 @@ jobs:
         run: |
           mkdir ${{ github.workspace }}/vrchat_public
           steamcmd \
-            +@sSteamCmdForcePlatformType windows \
+            +@sSteamCmdForcePlatformType Android \
             +force_install_dir ${{ github.workspace }}/vrchat_public \
             +login "${{ secrets.VRCDEPOTS_USER }}" "${{ secrets.VRCDEPOTS_PASSWORD }}" \
             +app_update 438100 validate +quit
