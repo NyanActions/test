@@ -1,0 +1,56 @@
+name: Check OTA build space
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  disk-check:
+    runs-on: ubuntu-26.04-arm
+    timeout-minutes: 30
+
+    steps:
+      - name: Space before cleanup
+        run: |
+          df -h / "$RUNNER_TEMP"
+          docker info --format 'Docker root: {{.DockerRootDir}}'
+
+      - name: Remove unused development tools
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for path in \
+            /usr/share/dotnet \
+            /opt/hostedtoolcache \
+            /usr/local/share/vcpkg \
+            /home/linuxbrew \
+            /usr/lib/jvm
+          do
+            if [[ -d "$path" && ! -L "$path" ]]; then
+              sudo du -sh "$path"
+              sudo rm -rf -- "$path"
+            fi
+          done
+
+          sudo apt-get clean
+          df -h / "$RUNNER_TEMP"
+
+      - name: Simulate 10 GiB OTA root image
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test_file="$RUNNER_TEMP/ota-rootfs-space-test.img"
+          trap 'rm -f "$test_file"' EXIT
+
+          fallocate -l 10G "$test_file"
+
+          docker_root="$(docker info --format '{{.DockerRootDir}}')"
+          echo "Space with a 10 GiB root image present:"
+          df -h "$RUNNER_TEMP" "$docker_root"
+
+          available="$(df -B1 --output=avail "$docker_root" | tail -n 1)"
+          awk -v bytes="$available" \
+            'BEGIN { printf "Docker space remaining: %.1f GiB\n", bytes / 1073741824 }'
